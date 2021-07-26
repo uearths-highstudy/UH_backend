@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height:100vh;
+        }
+        .main{
+            border:1px solid black;
+            height:50%;
+            display:flex;
+        }
+        .question{
+            font-weight: bold;
+            width:50%;
+        }
+        .notepad{
+            width:50%;
+            border-left: 1px solid black;
+            text-align: center;
+        }
+        #remove_add{
+            float: right;
+            height:40px;
+            width: 50px;
+            border-radius: 0;
+            border-style: dashed;
+            border-right-style: none;
+            border-top-style: none;
+        }
+        #lineWidth2{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="question">
+            <button id="remove_add"></button>
+        </div>
+        <div class="notepad">
+            <div class="options">
+                <select id="type" onchange="iferaser()">
+                    <option value="stroke">실선</option>
+                    <option value="square">사각형</option>
+                    <option value="eraser">지우개</option>
+                </select>
+                <select id="strokeStyle">
+                    <option value="black" >검정색</option>
+                    <option value="blue">파란색</option>
+                    <option value="red">빨간색</option>
+                    <option value="pink">분홍색</option>
+                    <option value="orange">주황색</option>
+                </select>
+                <select id="lineWidth">
+                    <option value="5">5px</option>
+                    <option value="10">10px</option>
+                    <option value="15">15px</option>
+                    <option value="20">20px</option>
+                </select>
+                <select id="lineWidth2">
+                    <option value="20">20px</option>
+                    <option value="50">50px</option>
+                    <option value="80">80px</option>
+                    <option value="100">100px</option>
+                </select>
+            </div>
+            <canvas id="canvas" width="800" height="400"></canvas>
+
+        </div>
+    </div>
+</body>
+<script>
+    let btn_value = 0;
+    document.getElementById('remove_add').addEventListener("click",()=>{
+        if(btn_value ==0){
+            document.querySelector(".question").style.display = 'block';
+            document.querySelector(".question").style.width = "100%";
+            document.querySelector(".notepad").style.display = 'none';
+            btn_value++;
+        }else if(btn_value ==1){
+            document.querySelector(".notepad").style.display = 'block';
+            document.querySelector(".notepad").style.width = "50%";
+            document.querySelector(".question").style.width = "50%";
+            document.querySelector(".question").style.display = 'block';
+            btn_value--;
+        }
+        console.log(btn_value)
+    })
+    
+    function iferaser(){
+        let iferaser = document.getElementById("type")
+        let lineWidth = document.getElementById('lineWidth')
+        let lineWidth2 = document.getElementById('lineWidth2')
+        if(iferaser.options[iferaser.selectedIndex].value == "eraser"){
+            lineWidth.style.display="none";
+            lineWidth2.style.display="inline";
+        }else{
+            lineWidth2.style.display="none";
+            lineWidth.style.display="inline";
+        }
+        
+    }
+
+    let isAbleDraw = false;
+    const options = {
+        type: 'stroke',
+        strokeStyle: 'black',
+        lineWidth: 5,
+        lineWidth2:20,
+    };
+    const rects = [];
+    let currentRect = null;
+    document.getElementById('canvas').addEventListener('mousedown', () => {
+        isAbleDraw = true;
+        currentRect = {
+            type: options.type,
+            strokeStyle: options.strokeStyle,
+            lineWidth: options.lineWidth,
+            lineWidth2: options.lineWidth2,
+            coordinates: [],
+        };
+    });
+    document.getElementById('canvas').addEventListener('mousemove', (e) => {
+        if (isAbleDraw) {
+            const ctx = e.target.getContext('2d');
+            const [x, y] = [e.offsetX, e.offsetY];
+            currentRect.coordinates.push([x, y]);
+            drawTools.clear();
+            drawTools.execute(rects);
+            if (currentRect.type === 'stroke') drawTools.stroke(currentRect.coordinates, 'rgba(255, 255, 0, .3)', currentRect.lineWidth);
+            if (currentRect.type === 'eraser') drawTools.eraser(currentRect.coordinates, currentRect.lineWidth2);
+            if (currentRect.type === 'square') drawTools.square(currentRect.coordinates, 'rgba(255, 255, 0, .3)');
+        }
+    });
+    document.getElementById('canvas').addEventListener('mouseup', () => {
+        isAbleDraw = false;
+        rects.push(currentRect);
+        drawTools.clear();
+        currentRect = null;
+        drawTools.execute(rects);
+        console.log(rects);
+    })
+
+    const drawTools = {
+        clear() {
+            // 캔버스 내용 제거
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        },
+        stroke(coordinates, color, lineWidth) {
+            // 마우스가 이동한 경로를 따라 실선 그리기
+            if (coordinates.length > 0) {
+                const ctx = document.getElementById('canvas').getContext('2d');
+                const firstCoordinate = coordinates[0];
+                ctx.beginPath();
+                ctx.moveTo(firstCoordinate[0], firstCoordinate[1]);
+                for (let i = 1; i < coordinates.length; i += 1) {
+                    ctx.lineTo(coordinates[i][0], coordinates[i][1]);
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = lineWidth;
+                ctx.stroke();
+                ctx.closePath();
+            }
+        },
+        eraser(coordinates, lineWidth2) {
+            // 마우스가 이동한 좌표에 따라 하얀색으로 원을 그려서 지우개 기능처럼 동작
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            for (let i = 0; i < coordinates.length; i += 1) {
+                ctx.beginPath();
+                const coordinate = coordinates[i];
+                const [x, y] = coordinate;
+                ctx.fillStyle = 'white';
+                ctx.arc(x, y, lineWidth2 / 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.closePath();
+            }
+        },
+        execute(rects) {
+            // rects 배열에 저장 된 도형을 기준으로 다시 캔버스에 그림
+            for (let i = 0; i < rects.length;  i += 1) {
+                const rect = rects[i];
+                const { type } = rect;
+                if (type === 'stroke') this.stroke(rect.coordinates, rect.strokeStyle, rect.lineWidth);
+                if (type === 'eraser') this.eraser(rect.coordinates, rect.lineWidth2);
+                if (type === 'square') this.square(rect.coordinates, rect.strokeStyle);
+            }
+        },
+        square(coordinates, color) {
+            // 사각 도형을 그림
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const start = coordinates[0];
+            const end = coordinates[coordinates.length - 1];
+            const [startX, startY] = start;
+            const [endX, endY] = [end[0] - startX, end[1] - startY];
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.fillRect(startX, startY, endX, endY);
+            ctx.closePath();
+        },
+    };
+    document.getElementById('type').addEventListener('change', (e) => {
+        options.type = e.target.value;
+    });
+    document.getElementById('strokeStyle').addEventListener('change', (e) => {
+        options.strokeStyle = e.target.value;
+    });
+    document.getElementById('lineWidth').addEventListener('change', (e) => {
+        options.lineWidth = e.target.value;
+    });
+    document.getElementById('lineWidth2').addEventListener('change', (e) => {
+        options.lineWidth2 = e.target.value;
+    });
+</script>
+</html>
