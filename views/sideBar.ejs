@@ -1,97 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="/stylesheets/index.css">
-    <link rel="stylesheet" href="/stylesheets/sideBar.css">
-</head>
-<body>
-    <div class="sidebar">
-        <div class="logo_content">
-            <div class="logo">
-                <div class="logo_name">하이스터디</div>
-            </div>
-            <i class="bx bx-menu" id="btn"></i>
-        </div>
-        <ul class="nav_list">
-            <li>
-                <a href="#">
-                    <i class="bx bx-group"></i>
-                    <span class="links_name">온라인 문제풀이</span>
-                </a>
-                <span class="tooltip">온라인 문제풀이</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bx bx-edit"></i>
-                    <span class="links_name">모의고사 문제</span>
-                </a>
-                <span class="tooltip">모의고사 문제</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bx bx-search"></i>
-                    <span class="links_name">학원찾기</span>
-                </a>
-                <span class="tooltip">학원찾기</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bx bx-home-circle"></i>
-                    <span class="links_name">내 학원</span>
-                </a>
-                <span class="tooltip">내 학원</span>
-            </li>
-            <% if(lc) { %>
-                <li>
-                    <a href="#">
-                        <i class="bx bxs-cog"></i>
-                        <span class="links_name">내 정보</span>
-                    </a>
-                    <span class="tooltip">내 정보</span>
-                </li>
-            <% } else { %>
-                <li>
-                    <a href="#">
-                        <i class="bx bx-log-in"></i>
-                        <span class="links_name">로그인</span>
-                    </a>
-                    <span class="tooltip">로그인</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="bx bx-user-plus"></i>
-                        <span class="links_name">회원가입</span>
-                    </a>
-                    <span class="tooltip">회원가입</span>
-                </li>
-            <% } %>
-        </ul>
-        <% if(lc) { %>
-            <div class="profile_content">
-                <div class="profile">
-                    <div class="profile_detailes">
-                        <!-- <img src="" alt=""> -->
-                        <div class="name_job">
-                            <div class="name">오명훈</div>
-                            <div class="job">학생</div>
-                        </div>
-                    </div>
-                    <i class="bx bx-log-out" id="log_out"></i>
-                </div>
-            </div>
-        <% } %>
-    </div>
-    <script>
-        let btn = document.getElementById("btn");
-        let sidebar = document.querySelector(".sidebar");
 
-        btn.onclick = () => {
-            sidebar.classList.toggle("active");
-        }
-    </script>
-</body>
-</html>
+<div class="sidebar">
+    <div class="logo_content">
+        <div class="logo">
+            <div class="logo_name">하이스터디</div>
+        </div>
+        <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <ul class="nav_list">
+        <li>
+            <a href="#">
+                <i class="bx bx-group"></i>
+                <span class="links_name">온라인 문제풀이</span>
+            </a>
+            <span class="tooltip">온라인 문제풀이</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class="bx bx-edit"></i>
+                <span class="links_name">모의고사 문제</span>
+            </a>
+            <span class="tooltip">모의고사 문제</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class="bx bx-search"></i>
+                <span class="links_name">학원찾기</span>
+            </a>
+            <span class="tooltip">학원찾기</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class="bx bx-home-circle"></i>
+                <span class="links_name">내 학원</span>
+            </a>
+            <span class="tooltip">내 학원</span>
+        </li>
+        <% if(lc) { %>
+            <li>
+                <a href="#">
+                    <i class="bx bxs-cog"></i>
+                    <span class="links_name">내 정보</span>
+                </a>
+                <span class="tooltip">내 정보</span>
+            </li>
+        <% } else { %>
+            <li>
+                <a href="#">
+                    <i class="bx bx-log-in"></i>
+                    <span class="links_name">로그인</span>
+                </a>
+                <span class="tooltip">로그인</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bx bx-user-plus"></i>
+                    <span class="links_name">회원가입</span>
+                </a>
+                <span class="tooltip">회원가입</span>
+            </li>
+        <% } %>
+    </ul>
+    <% if(lc) { %>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_detailes">
+                    <img src="/images/profiles/<%=lc.unumh%>" alt="" onerror="this.src='/images/profiles/default-profile.png'">
+                    <div class="name_job">
+                        <div class="name"><%= lc.name %></div>
+                        <div class="job"><%= lc.job %></div>
+                    </div>
+                </div>
+                <i class="bx bx-log-out" id="log_out"></i>
+            </div>
+        </div>
+    <% } %>
+</div>
+<script>
+    let btn = document.getElementById("btn");
+    let sidebar = document.querySelector(".sidebar");
+    btn.onclick = () => {
+        sidebar.classList.toggle("active");
+    }
+</script>

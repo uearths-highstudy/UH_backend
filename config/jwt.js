@@ -1,3 +1,3 @@
 let jwtObj = {};
-jwtObj.secret = "634R7H5_Family";
+jwtObj.secret = process.env.JWT_KEY;
 module.exports = jwtObj

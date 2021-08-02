@@ -1,0 +1,262 @@
+<div class="sidebar">
+    <div class="logo_content">
+        <div class="logo">
+            <div class="logo_name">하이스터디</div>
+        </div>
+        <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <ul class="nav_list">
+        <li>
+            <a href="#">
+                <i class="material-icons mode_edit">mode_edit</i>
+                <span class="links_name mode_edit_span">정보 입력</span>
+            </a>
+            <span class="tooltip">정보입력</span>
+        </li>
+        <li>
+            <a href="#">
+                <i class="material-icons">email</i>
+                <span class="links_name">이메일 인증</span>
+            </a>
+            <span class="tooltip">이메일 인증</span>
+        </li>
+    </ul>
+</div>
+<div class="main">
+    <div class="logo_content">
+        <div class="logo">
+            <img src="" widtt="50px" height="50px" alt="하이스터디 로고">
+            <span>하이스터디</span>
+        </div>
+    </div>
+    <div class="main-content z-depth-3">
+        <div class="row get-info">
+            <form class="col s12" action="POST">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="name" type="text" class="validate">
+                        <label for="name">Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="age" type="number" class="validate">
+                        <label for="age">Age</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id='job' onchange="showacademy()" required>
+                            <option value="" disabled selected>Choose your Job</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                        </select>
+                        <label>Job</label>
+                    </div>
+                </div>
+                <div class="row none grade">
+                    <div class="input-field col s12">
+                        <select id='grade' required>
+                            <option value="" disabled selected>Choose your grade</option>
+                            <option value="middle-1">중학교 1학년</option>
+                            <option value="middle-2">중학교 2학년</option>
+                            <option value="middle-3">중학교 3학년</option>
+                            <option value="high-1">고등학교 1학년</option>
+                            <option value="high-2">고등학교 2학년</option>
+                            <option value="high-3">고등학교 3학년</option>
+                        </select>
+                        <label>Grade</label>
+                    </div>
+                </div>
+                <div class="row none academy">
+                    <div class="input-field col s12">
+                        <input id="academy" type="text" class="validate">
+                        <label for="academy">Academy</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s10">
+                        <input id="id" type="text" class="validate">
+                        <label for="ID">ID</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <button class="btn waves-effect waves-light check-id" type="submit" name="action">ID 중복여부 확인
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input min-length="8" max-length="16" id="password" type="password"
+                            placeholder="8자리 이상 16자리 이하" class="validate">
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="email" type="text" class="validate">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="selectEmail" id="selectEmail" required>
+                            <option value="1" selected>직접입력</option>
+                            <option value="@naver.com">@naver.com</option>
+                            <option value="@gmail.com">@gmail.com</option>
+                            <option value="@kakao.com">@kakao.com</option>
+                            <option value="@hanmail.com">@hanmail.net</option>
+                            <option value="@nate.com">@nate.com</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <a class="waves-effect waves-light btn post-info">button</a>
+                </div>
+                <br><br>
+            </form>
+        </div>
+        <div class="row get-code none">
+            <h5>이메일 인증</h5>
+            <div>귀하의 이메일 <span id="putemail"></span>으로 인증코드를 전송하였습니다. <br>인증번호를 확인 후 입력해주시기 바랍니다. <br>인증코드는 <span
+                    id="remaintime">5분</span>후에 만료됩니다.</div>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    let date = new Date()
+    window.onload = () => {
+        let inputs = document.querySelectorAll('input')
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].setAttribute('required', '')
+        }
+    }
+    let btn = document.getElementById("btn");
+    let sidebar = document.querySelector(".sidebar");
+    btn.onclick = () => {
+        sidebar.classList.toggle("active");
+    }
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+
+    let value;
+
+    function showacademy() {
+        value = document.getElementById("job").options[document.getElementById("job").selectedIndex].value;
+        if (value == 'student') {
+            document.querySelector('.academy').classList.add('none')
+            document.querySelector('.grade').classList.remove('none')
+        }
+        else {
+            document.querySelector('.academy').classList.remove('none')
+            document.querySelector('.grade').classList.add('none')
+        }
+    }
+
+    let keytrue;
+    let idtrue;
+
+    function chkPW() {
+        let pw = $("#password").val();
+        let num = pw.search(/[0-9]/g);
+
+        if (pw.length < 8 || pw.length > 16) {
+            alert("8자리 ~ 16자리 이내로 입력해주세요.");
+            return false;
+        } else if (pw.search(/\s/) != -1) {
+            alert("비밀번호는 공백 없이 입력해주세요.");
+            return false;
+        } else {
+            console.log("통과");
+            keytrue = true;
+        }
+    }
+
+    document.getElementById('password').addEventListener("change", chkPW)
+
+    let check_id = document.querySelector('.check-id')
+
+    check_id.addEventListener("click", () => {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/account/overlap_id');
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                if (JSON.parse(xhr.responseText).result == 'overlap') {
+                    alert("이미 사용중인 아이디가 존재합니다. ");
+                    idtrue = false;
+                } else if (JSON.parse(xhr.responseText).result == 'okey') {
+                    alert("중복확인된 아이디가 없습니다.");
+                    idtrue = true;
+                }
+            }
+        }
+        xhr.send(JSON.stringify({
+            check_id: document.getElementById("id").value
+        }))
+    })
+
+
+    document.querySelector(".post-info").addEventListener('click', next)
+
+    function next() {
+
+        let info = {
+            'name': document.getElementById('name').value,
+            'age': document.getElementById('age').value,
+            'job': value,
+            'academy': document.getElementById('academy').value,
+            'grade': document.getElementById("grade").options[document.getElementById("grade").selectedIndex].value,
+            'uid': document.getElementById('id').value,
+            'password': document.getElementById('password').value,
+            'email': document.getElementById('email').value + document.getElementById("selectEmail").options[document.getElementById("selectEmail").selectedIndex].value,
+        }
+        if (idtrue == true && keytrue == true) { }
+        let post_info = document.querySelector('.post-info')
+        post_info.addEventListener('click', () => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/email_send');
+            xhr.setRequestHeader("Content-Type", "application/json")
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (JSON.parse(xhr.responseText).result == 'success') {
+                        document.querySelector('.mode_edit_span').innerHTML = '완료됨'
+                        document.querySelector('.mode_edit').innerHTML = 'check_circle'
+                        document.querySelector('.get-code').classList.remove('none');
+                        document.querySelector('.get-info').classList.add('none');
+                        document.getElementById('putemail').innerHTML = info.email
+
+                        let a = 0
+                        let maxtime = 300
+
+                        setInterval(() => {
+                            maxtime--
+                            document.getElementById('remaintime').innerHTML = parseInt(maxtime / 60) + '분' + maxtime % 60 + '초';
+                            if (++a == maxtime) {
+                                let xhr = new XMLHttpRequest();
+                                xhr.open('POST', '/account/expired');
+                                xhr.setRequestHeader("Content-Type", "application/json")
+                                xhr.onreadystatechange = () => {
+                                    if (xhr.readyState === 4 && xhr.status === 200) {
+                                        console.log(xhr.responseText)
+                                    }
+                                }
+                                xhr.send(JSON.stringify({
+                                    //인증코드 입력
+                                }))
+                            }
+                        }, 1000);
+                    } else if (JSON.parse(xhr.responseText).result == 'err') {
+                        alert(JSON.parse(xhr.responseText).msg)
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(info))
+        })
+    }
+
+
+</script>

@@ -3,24 +3,18 @@ const router = express.Router();
 const config = require('../config/jwt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const dbConnection = require('./db-connection');
+const login_check = require('./login_check')
 
 router
 .get('/', login_check, (req, res) => {
     res.render('index');
 })
+.get('/login', login_check, (req, res) => {
+    res.render('login');
+})
+.get('/register', login_check, (req, res) => {
+    res.render('register');
+})
 
 module.exports = router;
-
-function login_check(req, res, next) {
-    let token = req.cookies.user;
-    if(!token) {
-        res.locals.lc = null;
-        next();
-    } else {
-        jwt.verify(token, config.secret, (decoded, err) => {
-            if(err) { return res.sendFile('tokenErr.html', { root: path.join(__dirname, '../public/html/err') }); }
-            res.locals.lc = true;
-            next();
-        });
-    }
-}

@@ -5,6 +5,7 @@ require("dotenv").config({
 const express = require("express");
 const logger = require("morgan");
 const cookieParser = require('cookie-parser');
+const login_check = require('./routes/login_check');
 
 const app = express();
 
@@ -17,9 +18,10 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(cookieParser());
 
 app.use('/', require('./routes/index.js'));
+app.use('/account', require('./routes/account.js'));
 
-app.use((req, res) => { err404(req, res); });
+app.use(login_check, (req, res) => { err404(req, res); });
 
-app.listen(3000, () => { console.log("Connected !") });
+app.listen(3000, () => { console.log("Connected !"); });
 
-function err404(req, res) { res.sendFile('404.html', { root: path.join(__dirname, '/public/html/err') }); }
+function err404(req, res) { res.render('404'); }
