@@ -19,8 +19,8 @@ router
             let code = randomCode(7, 9);
             let pass_salt = uuid();
             let hash_pass = crypto.createHash("sha256").update(req.body.password+pass_salt, "binary").digest("hex");
-            const [data_] = await dbConnection.execute("INSERT INTO users (uid, password, password_salt, email, name, job, token, email_verify) \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [req.body.uid, hash_pass, pass_salt, req.body.email, req.body.name, req.body.job, code, 0]);
+            const [data_] = await dbConnection.execute("INSERT INTO users (uid, password, password_salt, email, name, job, grade, token, email_verify) \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [req.body.uid, hash_pass, pass_salt, req.body.email, req.body.name, req.body.job, req.body.grade, code, 0]);
             if(data_.affectedRows !== 1) {
                 return res.status(500).json({ result: 'err', msg: '알수 없는 오류로 인해 회원등록에 실패하였습니다.\n다시시도해주시길 바랍니다.' });
             } else {
@@ -70,18 +70,19 @@ router
                     email: data[0]['email'],
                     job: data[0]['job'],
                     academy: data[0]['academy'],
+                    grade: data[0]['grade'],
                     unumh: crypto.createHash("sha256").update(String(data[0]['id'])).digest("hex")
                 }
                 res.cookie("user", jwt.sign(info, config.secret));
                 res.locals.lc = info;
-                return res.status(200).json({ msg: 'success' });
+                return res.redirect('/');
             } else {
                 return res.status(400).json({ result: 'fail', msg: '아이디(또는 이메일) 또는 비밀번호가 일치하지 않습니다.' });
             }
         }
     } catch(error) {
         console.log(error);
-        return res.status(500).json({ result: 'err', msg: '서버에서 알 수 없는 에러가 발샏했습니다.' });
+        return res.status(500).json({ result: 'err', msg: '서버에서 알 수 없는 에러가 발생했습니다.' });
     }
 })
 
@@ -95,10 +96,25 @@ router
         }
     } catch(error) {
         console.log(error);
-        res.status(500).json({ result: 'err', msg: '에상치 못한 에러가 발생하였습니다.' });
+        return res.status(500).json({ result: 'err', msg: '서버에서 알 수 없는 에러가 발생했습니다.' });
     }
 })
-// .post('/')
+.post('/email_expired', async (req, res) => {
+    try {
+        let [data] = await dbConnection.execute("SELECT * FROM users WHERE email=?", [req.body.email]);
+        if(data.length >= 1) {
+            let [result] = await dbConnection.execute("DELETE FROM users WHERE email=?", [req.body.email]);
+            if(result.affectedRows !== 1) {
+                return res.status(500).json({ result: 'err', msg: '알 수 없는 이유로 인해 회원 삭제가 이루어지지 않았습니다.' });
+            } else {
+                return res.status(200).json({ result: 'success' });
+            }
+        }
+    } catch(error) {
+        console.log(error);
+        return res.status(500).json({ result: 'err', msg: '서버에서 알 수 없는 에러가 발생했습니다.' });
+    }
+})
 
 module.exports = router;
 

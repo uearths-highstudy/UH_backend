@@ -156,6 +156,7 @@ body {
 }
 .profile .profile_details .name_job {
     margin-left: 10px;
+    color: #fff;
 }
 .profile .profile_details .name {
     font-size: 15px;
@@ -177,6 +178,7 @@ body {
     text-align: center;
     transition: all 0.4s ease;
     background: #1d1b31;
+    color: #fff;
 }
 .sidebar.active .profile #log_out {
     left: 88%;

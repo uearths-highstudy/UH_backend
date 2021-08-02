@@ -7,14 +7,8 @@ const dbConnection = require('./db-connection');
 const login_check = require('./login_check')
 
 router
-.get('/', login_check, (req, res) => {
-    res.render('index');
-})
-.get('/login', login_check, (req, res) => {
-    res.render('login');
-})
-.get('/register', login_check, (req, res) => {
-    res.render('register');
-})
+.get('/', login_check, (req, res) => { res.render('index'); })
+.get('/login', login_check, (req, res) => { res.render('login'); })
+.get('/register', login_check, (req, res) => { res.render('register'); })
 
 module.exports = router;
