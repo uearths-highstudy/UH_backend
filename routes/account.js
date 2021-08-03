@@ -17,11 +17,8 @@ let storage = multer.diskStorage({
         jwt.verify(token, config.secret, async (err, decoded) => {
             if(err) { return res.status(400).json({ result: 'error', msg: '토큰을 분석하는 도중 에러가 발생하였습니다.' }); }
             let [data] = await dbConnection.execute("SELECT * FROM users WHERE uid=?", [decoded.uid]);
-            if(data.length < 1) {
-                return res.status(400).json({ result: 'not found', msg: '계정이 존재하지 않습니다.' });
-            } else {
-                cb(null, crypto.createHash("sha256").update(String(data[0]['id'])+data[0]['password_salt'], "binary").digest("hex"));
-            }
+            if(data.length < 1) return res.status(400).json({ result: 'not found', msg: '계정이 존재하지 않습니다.' });
+            else cb(null, crypto.createHash("sha256").update(String(data[0]['id'])+data[0]['password_salt'], "binary").digest("hex"));
         });
     }
 });
