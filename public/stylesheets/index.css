@@ -5,3 +5,8 @@
     box-sizing: border-box;
     font-family: 'Gothic A1', sans-serif;
 }
+
+.main{
+    display: block;
+    
+}

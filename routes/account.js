@@ -7,6 +7,25 @@ const { uuid } = require('uuidv4');
 const { MailSend } = require('./Email-Send');
 const dbConnection = require('./db-connection');
 const crypto = require('crypto');
+const multer = require('multer');
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) { cb(null, path.join(__dirname, '../public/images/profiles/')); },
+    filename: function (req, file, cb) {
+        let token = req.cookies.registerProfileSetting;
+        if(!token) { return res.status(400).json({ result: 'no token', msg: '이메일 인증이 완전히 이루어지지 않았습니다.' }); }
+        jwt.verify(token, config.secret, async (err, decoded) => {
+            if(err) { return res.status(400).json({ result: 'error', msg: '토큰을 분석하는 도중 에러가 발생하였습니다.' }); }
+            let [data] = await dbConnection.execute("SELECT * FROM users WHERE uid=?", [decoded.uid]);
+            if(data.length < 1) {
+                return res.status(400).json({ result: 'not found', msg: '계정이 존재하지 않습니다.' });
+            } else {
+                cb(null, crypto.createHash("sha256").update(String(data[0]['id'])+data[0]['password_salt'], "binary").digest("hex"));
+            }
+        });
+    }
+});
+const upload = multer({ storage: storage });
 
 router
 .post('/email_send', async (req, res) => {
@@ -20,7 +39,7 @@ router
             let pass_salt = uuid();
             let hash_pass = crypto.createHash("sha256").update(req.body.password+pass_salt, "binary").digest("hex");
             const [data_] = await dbConnection.execute("INSERT INTO users (uid, password, password_salt, email, name, job, grade, token, email_verify) \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [req.body.uid, hash_pass, pass_salt, req.body.email, req.body.name, req.body.job, req.body.grade, code, 0]);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [req.body.uid, hash_pass, pass_salt, req.body.email, req.body.name, req.body.job, req.body.grade, code, 0]);
             if(data_.affectedRows !== 1) {
                 return res.status(500).json({ result: 'err', msg: '알수 없는 오류로 인해 회원등록에 실패하였습니다.\n다시시도해주시길 바랍니다.' });
             } else {
@@ -40,6 +59,7 @@ router
             if(data[0]['token'] == req.body.code) {
                 let [data_] = await dbConnection.execute("UPDATE users SET email_verify=1, token='' WHERE token=?", [req.body.code]);
                 if(data_.info.indexOf("Changed: 1") != -1) {
+                    res.cookie("registerProfileSetting", jwt.sign({uid: data[0]['uid']}, config.secret));
                     return res.status(200).json({ result: 'success' });
                 }
             } else {
@@ -58,7 +78,7 @@ router
     try {
         let user_id = req.body.uid != undefined ? req.body.uid : '';
         let user_email = req.body.email != undefined ? req.body.email : '';
-        let [data] = await dbConnection.execute("SELECT * FROM users WHERE uid=? OR email=?", [user_id, user_email]);
+        let [data] = await dbConnection.execute("SELECT * FROM users WHERE uid=? OR email=? AND email_verify=?", [user_id, user_email, 1]);
         if(data.length < 1) return res.status(400).json({ msg: 'not found', msg: '아이디(또는 이메일) 또는 비밀번호가 일치하지 않습니다.' });
         else {
             let hash_pass = crypto.createHash("sha256").update(req.body.password+data[0]['password_salt']).digest("hex");
@@ -71,7 +91,7 @@ router
                     job: data[0]['job'],
                     academy: data[0]['academy'],
                     grade: data[0]['grade'],
-                    unumh: crypto.createHash("sha256").update(String(data[0]['id'])).digest("hex")
+                    unumh: crypto.createHash("sha256").update(String(data[0]['id'])+data[0]['password_salt']).digest("hex")
                 }
                 res.cookie("user", jwt.sign(info, config.secret));
                 res.locals.lc = info;
@@ -114,6 +134,10 @@ router
         console.log(error);
         return res.status(500).json({ result: 'err', msg: '서버에서 알 수 없는 에러가 발생했습니다.' });
     }
+})
+.post('/profile_upload_r', upload.single('proImage'), (req, res) => {
+    res.clearCookie('registerProfileSetting');
+    return res.status(200).json({ result: 'success' });
 })
 
 module.exports = router;

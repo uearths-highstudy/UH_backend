@@ -12,10 +12,11 @@ body {
     width: 78px;
     background: #11101d;
     padding: 6px 14px;
-    transition: width 0.5s ease;
+    transition: width 0.5s ease, box-shadow 0.5s ease;
 }
 .sidebar.active {
     width: 240px;
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 19px 38px, rgba(0, 0, 0, 0.7) 0px 15px 12px;
 }
 .sidebar .logo_content .logo {
     color: #fff;
@@ -138,6 +139,7 @@ body {
     background: #1d1b31;
 }
 .profile_content .profile .profile_details {
+    cursor: pointer;
     display: flex;
     align-items: center;
     opacity: 0;
@@ -179,6 +181,8 @@ body {
     transition: all 0.4s ease;
     background: #1d1b31;
     color: #fff;
+
+    cursor: pointer;
 }
 .sidebar.active .profile #log_out {
     left: 88%;

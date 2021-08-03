@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,126 +8,244 @@
     <link rel="stylesheet" href="/stylesheets/register.css">
     <link rel="stylesheet" href="/stylesheets/sideBar.css">
     <title>회원가입</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://code.jquery.com/jquery-3.5.0.js"
         integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/sideBar.css">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .btn {
+            background-color: #11101d;
+        }
+    
+        .btn:hover {
+            background-color: #11101d;
+        }
+    </style>
 </head>
+
 <body>
-    <% include ./sideBar.ejs %>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <div class="logo_name">하이스터디</div>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav_list">
+            <li>
+                <a href="#">
+                    <i class="material-icons mode_edit">mode_edit</i>
+                    <span class="links_name mode_edit_span">정보 입력</span>
+                </a>
+                <span class="tooltip">정보입력</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="material-icons email_verify">email</i>
+                    <span class="links_name email_verify_span">이메일 인증</span>
+                </a>
+                <span class="tooltip">이메일 인증</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-face face'></i>
+                    <span class="links_name face_span">프로필 선택</span>
+                </a>
+                <span class="tooltip">프로필 선택</span>
+            </li>
+            <li>
+                <a href="/">
+                    <i class='bx bx-arrow-back'></i>
+                    <span class="links_name person_span">뒤로가기</span>
+                </a>
+                <span class="tooltip">뒤로가기</span>
+            </li>
+        </ul>
+    </div>
     <div class="main">
         <div class="logo_content">
             <div class="logo">
-                <img src="" widtt="50px" height="50px" alt="하이스터디 로고">
-                <span>하이스터디</span>
+                <img src="/images/logo.png" widtt="50px" height="50px" alt="하이스터디 로고">
             </div>
         </div>
         <div class="main-content z-depth-3">
             <div class="row get-info">
-                <form class="col s12" action="POST">
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="name" type="text" class="validate">
-                            <label for="name">Name</label>
+                <div style="width:80%;margin:auto">
+                    <form action="/account/overlap_id" method="POST" onsubmit="send_info(event)">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="name" type="text" class="validate" required>
+                                <label for="name">Name</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="age" type="number" class="validate">
-                            <label for="age">Age</label>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="age" type="number" class="validate" required>
+                                <label for="age">Age</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <select id='job' onchange="showacademy()" required>
-                                <option value="" disabled selected>Choose your Job</option>
-                                <option value="teacher">Teacher</option>
-                                <option value="student">Student</option>
-                            </select>
-                            <label>Job</label>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <select id='job' onchange="showacademy()" required>
+                                    <option value="" disabled selected>Choose your Job</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="student">Student</option>
+                                </select>
+                                <label>Job</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row none grade">
-                        <div class="input-field col s12">
-                            <select id='grade' required>
-                                <option value="" disabled selected>Choose your grade</option>
-                                <option value="middle-1">중학교 1학년</option>
-                                <option value="middle-2">중학교 2학년</option>
-                                <option value="middle-3">중학교 3학년</option>
-                                <option value="high-1">고등학교 1학년</option>
-                                <option value="high-2">고등학교 2학년</option>
-                                <option value="high-3">고등학교 3학년</option>
-                            </select>
-                            <label>Grade</label>
+                        <div class="row none grade">
+                            <div class="input-field col s12">
+                                <select id='grade'>
+                                    <option value="" disabled selected>Choose your grade</option>
+                                    <option value="middle-1">중학교 1학년</option>
+                                    <option value="middle-2">중학교 2학년</option>
+                                    <option value="middle-3">중학교 3학년</option>
+                                    <option value="high-1">고등학교 1학년</option>
+                                    <option value="high-2">고등학교 2학년</option>
+                                    <option value="high-3">고등학교 3학년</option>
+                                </select>
+                                <label>Grade</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row none academy">
-                        <div class="input-field col s12">
-                            <input id="academy" type="text" class="validate">
-                            <label for="academy">Academy</label>
+                        <div class="row none academy">
+                            <div class="input-field col s12">
+                                <input id="academy" type="text" class="validate">
+                                <label for="academy">Academy</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s10">
-                            <input id="id" type="text" class="validate">
-                            <label for="ID">ID</label>
+                        <div class="row">
+                            <div class="input-field col s10">
+                                <input id="id" type="text" class="validate" required>
+                                <label for="id">ID</label>
+                            </div>
+                            <div class="input-field col s2">
+                                <button class="btn waves-effect waves-light check-id" name="action">중복확인
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="input-field col s2">
-                            <button class="btn waves-effect waves-light check-id" type="submit" name="action">ID 중복여부 확인
-                                <i class="material-icons right">send</i>
-                            </button>
+                        <div class="row">
+                            <div class="input-field col s10">
+                                <input min-length="8" max-length="16" id="password" type="password"
+                                    placeholder="8자리 이상 16자리 이하" class="validate" required>
+                                <label for="password">Password</label>
+                            </div>
+                            <div class="input-field col s2" style="cursor: pointer;"
+                                onclick="document.getElementById('password').removeAttribute('type'); setTimeout(() => {document.getElementById('password').setAttribute('type', 'password');}, 1500);">
+                                <i class="material-icons">remove_red_eye</i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input min-length="8" max-length="16" id="password" type="password"
-                                placeholder="8자리 이상 16자리 이하" class="validate">
-                            <label for="password">Password</label>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="email" type="text" class="validate" required>
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <select name="selectEmail" id="selectEmail">
+                                    <option value="">직접입력</option>
+                                    <option value="@naver.com">@naver.com</option>
+                                    <option value="@gmail.com">@gmail.com</option>
+                                    <option value="@kakao.com">@kakao.com</option>
+                                    <option value="@hanmail.com">@hanmail.net</option>
+                                    <option value="@nate.com">@nate.com</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s6">
-                            <input id="email" type="text" class="validate">
-                            <label for="email">Email</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <select name="selectEmail" id="selectEmail" required>
-                                <option value="1" selected>직접입력</option>
-                                <option value="@naver.com">@naver.com</option>
-                                <option value="@gmail.com">@gmail.com</option>
-                                <option value="@kakao.com">@kakao.com</option>
-                                <option value="@hanmail.com">@hanmail.net</option>
-                                <option value="@nate.com">@nate.com</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <a class="waves-effect waves-light btn post-info">button</a>
-                    </div>
-                    <br><br>
-                </form>
+                            <button class="btn waves-effect waves-light post-info row" type="submit" name="action">확인</button>
+                    </form>
+                </div>
             </div>
             <div class="row get-code none">
-                <h5>이메일 인증</h5>
-                <div>귀하의 이메일 <span id="putemail"></span>으로 인증코드를 전송하였습니다. <br>인증번호를 확인 후 입력해주시기 바랍니다. <br>인증코드는 <span
-                        id="remaintime">5분</span>후에 만료됩니다.</div>
+                <div class="row">
+                    <div style="width:80%;margin:auto; text-align: center;">
+                        <i class="large material-icons">email</i>
+                        <div>
+                            <h5>이메일 인증</h5>귀하의 이메일 <span id="putemail"></span>으로 인증코드를 전송하였습니다. <br>인증번호를 확인 후
+                            입력해주시기 바랍니다. <br>인증코드는
+                            <span id="remaintime">5분</span>후에 만료됩니다. <br>
+                            이메일이 보이지 않으신다면, 스팸메일함을 확인해주세요.
+                        </div>
+                    </div>
                 </div>
-                
+                <br>
+                <div style="width:80%;margin:auto; text-align: center;">
+                    <div style="font-size: 100px;" class='none check-icon'>&#10003;</div>
+                    <div class="preloader-wrapper big active preloader-ing">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="width:80%;margin:auto">
+                    <br>
+                    <form action="/account/email_verify" method="POST" style="margin:auto;" onsubmit="verify_check(event);">
+                        <div class="row">
+                            <div class="input-field col s9">
+                                <input id="email-code" type="text" class="validate" required>
+                                <label for="email-code">email-code</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <button class="btn waves-effect waves-light check-code" type="submit" name="action">인증코드
+                                    확인</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <div class="row get-profile none">
+                <div class="row">
+                    <div style="width:80%;margin:auto; text-align: center;">
+                        <i class="large material-icons">person</i>
+                        <div>
+                            <h5>프로필 선택</h5>하이스터디 내에서 사용하실 프로필사진을 선택하세요. <br>
+                            넘어가기를 누르신다면 회원님의 프로필은 기본 이미지로 대체됩니다. <br>
+                            확인을 누르시면 선택된 이미지를 회원님의 프로필사진으로 설정합니다.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width:60%;margin:auto">
+                            <form action="/account/profile_upload_r" method="POST" onsubmit="send_profile(event)" enctype="multipart/form-data" id="pro_form">
+                                <div class="file-field input-field">
+                                    <div class="btn orange accent-2">
+                                        <span>프로필사진 선택</span>
+                                        <input type="file" id="info-profile" name="proImage">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div class="input-field center">
+                                    <button class="btn waves-effect waves-light to-next" type="submit"
+                                        name="action">넘어가기</button>
+                                    <button class="btn waves-effect waves-light choose-profile" type="submit"
+                                        name="action">확인</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         </div>
     </div>
+    </div>
+    </div>
     <script>
+        let info;
         let date = new Date()
-        window.onload = () => {
-            let inputs = document.querySelectorAll('input')
-            for (let i = 0; i < inputs.length; i++) {
-                inputs[i].setAttribute('required', '')
-            }
-        }
-        let btn = document.getElementById("btn");
+        let btn = document.querySelector("#btn");
         let sidebar = document.querySelector(".sidebar");
         btn.onclick = () => {
             sidebar.classList.toggle("active");
@@ -141,10 +260,12 @@
             value = document.getElementById("job").options[document.getElementById("job").selectedIndex].value;
             if (value == 'student') {
                 document.querySelector('.academy').classList.add('none')
+                document.querySelector('.academy').removeAttribute("required")
                 document.querySelector('.grade').classList.remove('none')
             }
             else {
                 document.querySelector('.academy').classList.remove('none')
+                document.querySelector('.grade').removeAttribute("required")
                 document.querySelector('.grade').classList.add('none')
             }
         }
@@ -181,8 +302,8 @@
                     if (JSON.parse(xhr.responseText).result == 'overlap') {
                         alert("이미 사용중인 아이디가 존재합니다. ");
                         idtrue = false;
-                    } else if (JSON.parse(xhr.responseText).result == 'okey') {
-                        alert("중복확인된 아이디가 없습니다.");
+                    } else if (JSON.parse(xhr.responseText).result == 'okay') {
+                        alert("사용 가능한 아이디입니다.");
                         idtrue = true;
                     }
                 }
@@ -192,12 +313,12 @@
             }))
         })
 
+        let interval
 
-        document.querySelector(".post-info").addEventListener('click', next)
-
-        function next() {
-
-            let info = {
+        let check_code = document.querySelector(".check-code");
+        function send_info(e){
+            e.preventDefault();
+            info = {
                 'name': document.getElementById('name').value,
                 'age': document.getElementById('age').value,
                 'job': value,
@@ -210,6 +331,7 @@
             if (idtrue == true && keytrue == true) { }
             let post_info = document.querySelector('.post-info')
             post_info.addEventListener('click', () => {
+                post_info.click()
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', '/account/email_send');
                 xhr.setRequestHeader("Content-Type", "application/json")
@@ -221,11 +343,11 @@
                             document.querySelector('.get-code').classList.remove('none');
                             document.querySelector('.get-info').classList.add('none');
                             document.getElementById('putemail').innerHTML = info.email
-
+    
                             let a = 0
                             let maxtime = 300
-
-                            setInterval(() => {
+    
+                            interval = setInterval(() => {
                                 maxtime--
                                 document.getElementById('remaintime').innerHTML = parseInt(maxtime / 60) + '분' + maxtime % 60 + '초';
                                 if (++a == maxtime) {
@@ -238,20 +360,75 @@
                                         }
                                     }
                                     xhr.send(JSON.stringify({
-                                        //인증코드 입력
+                                        code: document.getElementById("email-code").value,
+                                        email: info.email
                                     }))
                                 }
                             }, 1000);
-                        } else if (JSON.parse(xhr.responseText).result == 'err' && xhr.readyState === 4) {
-                            alert(JSON.parse(xhr.responseText).msg)
-                        }
+                        } 
+                    }else if (xhr.status === 400 && xhr.readyState === 4) {
+                        alert("알수 없는 오류로 인해 회원등록에 실패하였습니다.\n다시시도해주시길 바랍니다.")
                     }
                 }
                 xhr.send(JSON.stringify(info))
             })
         }
 
+        function verify_check(e) {
+            e.preventDefault();
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/email_verify');  
+            xhr.setRequestHeader("Content-Type", "application/json")
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (JSON.parse(xhr.responseText).result == 'success') {
+                        document.querySelector(".preloader-ing").classList.add("none");
+                        document.querySelector(".check-icon").classList.remove("none");
+                        document.querySelector('.email_verify_span').innerHTML = '완료됨'
+                        document.querySelector('.email_verify').innerHTML = 'check_circle'
+                        document.querySelector('.get-code').classList.add('none');
+                        document.querySelector('.get-profile').classList.remove('none');
+                        clearInterval(interval)
+                    }
+                }else if (xhr.status === 400 && xhr.readyState ===4) {
+                    alert(JSON.parse(xhr.responseText).msg);
+                }
+            }
+            xhr.send(JSON.stringify({
+                code: document.getElementById("email-code").value,
+                email: document.getElementById('email').value + document.getElementById("selectEmail").options[document.getElementById("selectEmail").selectedIndex].value
+            }))
+        }
+        function send_profile(e){
+            e.preventDefault();
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/profile_upload_r');
+            xhr.setRequestHeader("Content-Type", "application/json")
+            let form = document.getElementById("pro_form");
+            let formData = new FormData(form);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(document.getElementById("info-profile").files)
+                    if (JSON.parse(xhr.responseText).result == 'success') {
+                        alert("회원가입이 성공적으로 완료되었습니다.")
+                        setTimeout(() => {
+                            // window.location.href="/login"
+                        }, 1000);
+                    }
+                }else if(xhr.status === 400 && xhr.readyState ===4){
+                    alert("예기치 못한 오류가 발생하였습니다. 처음부터 다시 진행해주시기 바랍니다. ")
+                    setTimeout(() => {
+                            window.location.href="/register"
+                    }, 1000);
+                }
+            }
+            xhr.send(formData);
+        }
 
+        document.querySelector('.to-next').addEventListener("click", ()=>{
+            window.location.href= '/login'
+        })
     </script>
 </body>
+
 </html>

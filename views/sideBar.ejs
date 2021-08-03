@@ -7,6 +7,13 @@
     </div>
     <ul class="nav_list">
         <li>
+            <a href="/">
+                <i class="bx bx-home-alt"></i>
+                <span class="links_name">메인 페이지</span>
+            </a>
+            <span class="tooltip">메인 페이지</span>
+        </li>
+        <li>
             <a href="#">
                 <i class="bx bx-group"></i>
                 <span class="links_name">온라인 문제풀이</span>
@@ -79,5 +86,9 @@
     let sidebar = document.querySelector(".sidebar");
     btn.onclick = () => {
         sidebar.classList.toggle("active");
+    }
+
+    document.getElementById("log_out").onclick = () => {
+        location.replace('/logout');
     }
 </script>

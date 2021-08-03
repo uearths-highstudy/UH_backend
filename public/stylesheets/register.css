@@ -255,15 +255,10 @@ body {
     display: none;
 }
 
-.btn {
-    background-color: #11101d;
-}
-.main-content .get-code {
-    text-align: left;
+
+.main-content .get-code, .main-content .get-profile {
     width: 90%;
     margin: auto;
     margin-top: 5%;
-}
-.get-code .middle{
-    height:100%;
+    text-align: left;
 }

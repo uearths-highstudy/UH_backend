@@ -10,5 +10,9 @@ router
 .get('/', login_check, (req, res) => { res.render('index'); })
 .get('/login', login_check, (req, res) => { res.render('login'); })
 .get('/register', login_check, (req, res) => { res.render('register'); })
+.get('/logout', (req, res) => {
+    res.clearCookie('user');
+    res.redirect('/');
+})
 
 module.exports = router;
