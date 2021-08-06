@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/myacademy.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <% include ./header.ejs %>
+        <title>내 학원</title>
+</head>
+
+<body style="display:flex">
+    <div style="width:5%">
+        <% include ./sideBar.ejs %>
+    </div>
+    <div class="main">
+        <div class="title">
+            내 학원
+        </div>
+        <% if(lc){ %>
+            <div class="content">
+                <div class="aca-content" onclick="$('#academys').slideUp()">
+                    <div class="problem_part">
+                        <div style="display:flex; height: 100px; width:80%;margin:auto">
+                            <form action="/academy/get_particular_problem" method="POST" id="date"onsubmit="send_particular_problem()">
+                                <div style="width:30%;height:80px;line-height: 80px;">문제 검색하기 </div>
+                                <input type="date" class="get_date">
+                                <button type="submit" class="get_date_btn">확인</button>
+                            </form>
+                            <form action="/academy/inputpincode" method="POST" id='getPincode'>
+                                <div style="width:30%;height:80px;line-height: 80px;">핀 코드 입력하기</div>
+                                <input type="text" placeholder="PIN 코드를 입력하세요" class="get_code">
+                                <button type="submit" class="get_date_btn">확인</button>
+                            </form>
+                        </div>
+                        <div class="problem_list">
+                            <div class="today">
+                                <div class='today_date'></div>
+                                <div class="today_problem">
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="yesterday">
+                                <div class='yesterday_date'></div>
+                                <div class="yesterday_problem">
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="last_weak">
+                                <div class='last_weak'>지난주</div>
+                                <div class="last_weak_problem">
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                    <div class="problem">
+                                        fdsaf
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right_rate">
+                        <div style="width:90%;margin:auto;height: 90%;">
+                            <div class="sub_title">
+                                문제 제목
+                            </div>
+                            <br>
+                            <div class="sub_title_info">
+                                출제자: <br>
+                                출제 날짜: <br>
+                                총 푼 사람: <br>
+                            </div>
+                            <br>
+                            <div class="sub_title_myinfo">
+                                푼 사람: <br>
+                                푼 시간: <br>
+                                정답률: <br>
+                            </div>
+                            <br>
+                            <div class="sub_title_supplement">
+                                보충문제 풀기
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+    </div>
+    <% if(lc.job=='teacher' ) { %>
+        <script>
+
+        </script>
+        <% } %>
+            <script>
+                let updown = false
+                let date = new Date()
+                window.onload = () => {
+                    document.querySelector('.today_date').innerHTML = date.getMonth() + 1 + '월 ' + date.getDate() + '일'
+                    document.querySelector('.yesterday_date').innerHTML = date.getMonth() + 1 + '월 ' + (date.getDate() - 1) + '일'
+                    // let xhr = new XMLHttpRequest()
+                    // xhr.open("POST", '/academy/get_applicant');
+                    // xhr.setRequestHeader('Content-Type', 'application/json')
+                    // xhr.onreadystatechange = ()=>{
+                    //     if(xhr.status === 200 && xhr.readyState === 4){
+                    //         console.log(JSON.parse(xhr.responseText))
+                    //     }
+                    //     else if(xhr.readyState === 4){
+                    //         alert(JSON.parse(xhr.responseText).msg)
+                    //         window.location.href = '/'
+                    //     }
+                    // }
+                    // xhr.send()
+                }
+                function click_this_academy(a) {
+
+                    $('#academys').slideUp()
+                }
+                function updown_func() {
+                    if (updown == false) {
+                        console.log('good')
+                        $('#academys').slideUp();
+                        updown = true
+                    } else if (updown == true) {
+                        $('#academys').slideDown();
+                        updown = false
+                    }
+                }
+                function send_particular_problem() {
+                    console.log(document.querySelector(".get_date").value)
+                    // let xhr = new XMLHttpRequest()
+                    // xhr.open('POST', '/academy/get_particular_problem')
+                    // xhr.setRequestHeader("Content-Type", 'application/json')
+                    // xhr.onreadystatechange = () => {
+                    //     if (xhr.status === 200 && xhr.readyState === 4) {
+                    //         console.log(JSON.parse(xhr.responseText))
+                    //     }
+                    //     else if (xhr.readyState === 4) {
+                    //         alert(JSON.parse(xhr.responseText).msg)
+                    //     }
+                    // }
+                    // xhr.send(JSON.stringify({
+                    //     date : document.querySelector(".get_date").value
+                    // }))
+                }
+            </script>
+</body>
+
+</html>

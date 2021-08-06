@@ -8,3 +8,6 @@
 strong {
     font-weight: bolder;
 }
+img {
+    -webkit-user-drag: none;
+}

@@ -78,7 +78,26 @@
     float: left;
 
 }
+
+.notice > img{
+    width: 1000px;
+    display: block;
+    text-align: left;
+    margin-left: 0;
+    padding-left: 0;
 }
+
+.title{
+    width: 500px;
+}
+
+.number{
+    width: 70px;
+}
+
+}
+
+
 
 .online
 ,.trial
@@ -172,6 +191,24 @@
         width: 700px;
     }
 
+    .title{
+        width: 300px;
+    }
+
+    .number{
+        width: 70px;
+    }
+
 }
 
+
+.notice > input{
+    float: right;
+    margin-top: 15px;
+    width: 55px;
+}
+
+.notice > a:hover {
+    text-decoration: underline;
+}
 

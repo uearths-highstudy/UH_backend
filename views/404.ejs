@@ -7,10 +7,68 @@
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/stylesheets/index.css">
     <link rel="stylesheet" href="/stylesheets/sideBar.css">
-    <title>404</title>
+    <link re;="stylesheet" href="/stylesheets/404.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&display=swap" rel="stylesheet">
+    <title>Error 404</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        img{
+            width: 300px;
+
+            padding-top: 100px;
+        }
+
+        .p404{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 80px;
+            color: gray;
+        }
+
+        .error{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 30px;
+            color: gray;
+            padding-top: 40px;
+        }
+
+        .back {
+            border-radius: 15px;
+            padding: 10px 15px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(255, 255, 255);
+            cursor: pointer;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 70%;
+            outline: none;
+            border: none;
+        }
+        .back:hover {
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 1px 5px -1px inset, rgba(0, 0, 0, 0.3) 0px 1px 5px -1px inset;
+        }
+        .back:active {
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 7px 15px -2px inset, rgba(0, 0, 0, 0.3) 0px 5px 15px -5px inset;
+        }
+        
+    </style>
 </head>
 <body>
     <% include ./sideBar.ejs %>
+    <img src="/images/main/404.png">
 
+    <p class="p404">404</p>
+    <p class="error">Error : Please refresh or reconnect it.</p>
+
+    <button class="back" role="button" onclick="history.go(-1)">돌아가기</button>
 </body>
 </html>

@@ -19,9 +19,6 @@
 
 
         <div class="main">
-            <div class="banner">
-                [?]
-            </div>
             <div class="online">
                 <img src="/images/main/online.png">
             </div>
@@ -31,7 +28,7 @@
             </div>
 
             <div class="find">
-                <img src="/images/main/academy.png">
+                <img src="/images/main/academy.png" onClick="location.href='/findacademy'">
             </div>
 
             <div class="event">
@@ -39,17 +36,30 @@
             </div>
 
             <div class="notice">
-                <img src="/images/main/notice.png" onclick="location.href='/notice.ejs'">
+                <img src="/images/main/notice.png">
+                <a href="" style="float: right;">더보기 >></a>
+                
+
+                <table>
+                    <tr>
+                        <th clss="number">번호</th>
+                        <th class="title">제목</th>
+                        <th>작성자</th>
+                        <th>날짜</th>
+                        <th>조회수</th>
+                    </tr>
+
+                    <tr>
+                        <td>1</td>
+                        <td>Test</td>
+                        <td>Admin</td>
+                        <td>오늘</td>
+                        <td>122</td>
+                    </tr>
+                </table>
+                <input type="button" value="글쓰기" onClick="location.href='/notice'">
             </div>
         </div>
-
-    <% if(lc) { %>
-        <% if(lc.job == 'teacher') { %>
-            <script>
-                console.log("<%=lc.job%>");
-            </script>
-        <% } %>
-    <% } %>
     <script>
     </script>
 </body>

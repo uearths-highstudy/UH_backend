@@ -1,0 +1,143 @@
+body{
+    background-color: rgb(241, 241, 241);
+    height:100vh;
+}
+
+.main{
+    margin-top: 15px;
+    height: 97%;
+    width:93%;
+    margin:auto;
+    align-items: center;
+    justify-content: center;
+    }
+
+.main .title{
+    width:50%;
+    margin:auto;
+    text-align: center;
+    height:70px;
+    background-color: #11101d;
+    color: white;
+    line-height: 70px;
+    font-size: 50px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+.main .content{
+    margin-top: 30px;
+    height:88%;
+    width: 99%;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+
+.aca-content{
+    display:flex;
+    height: 97%;
+}
+.problem_part{
+    height:100%;
+    width:70%;
+    text-align: center;
+}
+#date{
+    padding:10px;
+    width:50%;
+    text-align: center;
+    height:100%;
+    display:flex;
+    margin:auto;
+    justify-content: center;
+    align-items: center;
+}
+#getPincode{
+    padding:10px;
+    width:50%;
+    text-align: center;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.get_date{
+    height: 40px;
+    width:50%
+}
+.get_code{
+    height: 40px;
+    width:50%
+}
+.get_date_btn{
+    width:20%;
+    height:40px;
+    background-color: #222;
+    border-radius: 4px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 0;
+    max-width: none;
+    min-height: 44px;
+    min-width: 10px;
+    outline: none;
+    overflow: hidden;
+    padding: 9px 20px 8px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+  
+.get_date_btn:hover,
+.get_date_btn:focus {
+  opacity: .75;
+}
+
+.problem_list{
+    height:90%;
+    padding:10px;
+    overflow-y: auto;
+}
+.right_rate{
+    width:30%;
+    border-left: 1px solid gray;
+    display:flex
+}
+.today_problem, .yesterday_problem, .last_weak_problem{
+    padding:10px;
+    width:100%;
+    overflow-y: auto;
+    height:200px;
+}
+.problem{
+    border:1px solid black;
+    width:250px;
+    height:120px;
+    border-radius: 15px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    line-height: 120px;
+    text-align: center;
+    display:inline-block;
+    cursor: pointer;
+}
+
+.right_rate .sub_title{
+    font-size: 2em;
+    text-align: center;
+}
+.sub_title_info,.sub_title_myinfo,.sub_title_supplement{
+    width:40%;
+    margin:auto
+}

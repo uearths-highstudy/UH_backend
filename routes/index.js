@@ -32,5 +32,8 @@ router
         else { return res.redirect("/"); }
     });
 })
+.get('/myacademy/:academy_id', login_required, login_check, (req, res) => { res.render('my_academy'); })
+.get('/myacademy', login_required, login_check, (req, res) => { res.render('myAcademys'); })
+.get('/notice', login_required, login_check,(req, res) => { res.render('notice'); })
 
 module.exports = router;

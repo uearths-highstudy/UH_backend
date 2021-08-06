@@ -7,104 +7,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>학원찾기</title>
     <link rel="stylesheet" href="/stylesheets/findacademy.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0//css/materialize.min.css"> -->
-    <script src="https://code.jquery.com/jquery-3.5.0.js"
-        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <% include ./header.ejs %>
 </head>
 
 <body>
     <% include ./sideBar.ejs %>
-        <div class="main">
-            <div class="content z-depth-2">
-                <div class="search">
-                    <input class="search-bar" placeholder="학원 이름을 입력하세요" onkeyup="enterkey()">
-                    <div class="a-search" style="line-height: 90px;"><i class="material-icons samll">search</i></div>
-                </div>
-                <div class="result">
-                </div>
+    <div class="main">
+        <div class="content z-depth-2">
+            <div class="search">
+                <input id="search-bar" placeholder="학원 이름을 입력하세요" onkeyup="enterkey()">
+                <div class="a-search" style="line-height: 90px;"><i class="material-icons samll">search</i></div>
+            </div>
+            <div class="result">
+                <table>
+                    <thead>
+                        <td>이름</td>
+                        <td>주소</td>
+                        <td>대표자</td>
+                        <td>전화번호</td>
+                        <td>신청</td>
+                    </thead>
+                    <tbody id="result"></tbody>
+                </table>
             </div>
         </div>
-        <script>
-            let isteacher
-            function enterkey() {
-                if (window.event.keyCode == 13) {
-                    findaca()
+    </div>
+    <script>
+        let isteacher
+        function enterkey() {
+            if (window.event.keyCode == 13) {
+                findaca()
+            }
+        }
+        document.querySelector('.a-search').addEventListener("click", findaca)
+
+        let result_table = document.getElementById("result");
+
+        let academy_result;
+
+        function findaca() {
+            while(result_table.hasChildNodes()) { result_table.removeChild(result_table.firstChild); }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', "/academy/findacademy");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let a_data = JSON.parse(xhr.responseText);
+                    academy_result = a_data.data;
+                    for(let data in a_data.data) {
+                        let tr_d = document.createElement("tr");
+
+                        let name_t = document.createElement("td");
+                        let loc_t = document.createElement("td");
+                        let expo_t = document.createElement("td");
+                        let num_t = document.createElement("td");
+                        let sub_t = document.createElement("td");
+                        let sub_b = document.createElement("div");
+                        sub_t.appendChild(sub_b);
+
+                        name_t.innerHTML = a_data.data[data].name;
+                        loc_t.innerHTML = a_data.data[data].location;
+                        expo_t.innerHTML = a_data.data[data].exponent;
+                        num_t.innerHTML = a_data.data[data].number;
+                        sub_b.innerHTML = "참가 신청";
+                        sub_b.dataset.idx = data;
+                        sub_b.classList.add("btn");
+
+                        sub_b.addEventListener("click", choose_this_aca);
+
+                        let dt = [name_t, loc_t, expo_t, num_t, sub_t];
+                        for(let i of dt) { tr_d.appendChild(i); }
+                        result_table.appendChild(tr_d);
+                    }
+                } else if (xhr.readyState === 4 && xhr.status === 500) {
+                    let a_data = JSON.parse(xhr.responseText);
+                    alert(a_data.msg);
+                } else if (xhr.readyState === 4 && xhr.status === 400) {
+                    let a_data = JSON.parse(xhr.responseText);
+                    alert(a_data.msg);
                 }
             }
-            document.querySelector('.a-search').addEventListener("click", findaca)
-
-            function findaca() {
-                let div = document.querySelector(".result");
-                div.innerHTML = ""
-                let xhr = new XMLHttpRequest()
-                xhr.open('POST', "/academy/findacademy");
-                xhr.setRequestHeader("Content-Type", "application/json")
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        let a_data = JSON.parse(xhr.responseText)
-                        for (let i = 0; i < a_data.data.length; i++) {
-
-                            let mother_div = document.createElement('div')
-                            let name_div = document.createElement('div')
-                            let address_div = document.createElement('div')
-                            let ceo_div = document.createElement('div')
-                            let num_div = document.createElement('div')
-                            let enroll_div = document.createElement('div')
-                            let enroll_btn = document.createElement('button')
-
-                            mother_div.classList.add('mother_div')
-                            name_div.classList.add('name_div')
-                            address_div.classList.add('address_div')
-                            ceo_div.classList.add('ceo_div')
-                            num_div.classList.add('num_div')
-                            enroll_btn.classList.add('btn')
-                            enroll_div.classList.add('enroll_div')
-                            enroll_btn.setAttribute('onclick', 'choose_this_aca(this)')
-
-                            name_div.innerHTML = a_data.data[i].name
-                            address_div.innerHTML = a_data.data[i].location
-                            ceo_div.innerHTML = a_data.data[i].exponent
-                            num_div.innerHTML = a_data.data[i].number
-                            enroll_btn.innerHTML = '가입신청'
-
-                            mother_div.appendChild(name_div)
-                            mother_div.appendChild(address_div)
-                            mother_div.appendChild(ceo_div)
-                            mother_div.appendChild(num_div)
-                            enroll_div.appendChild(enroll_btn)
-                            mother_div.appendChild(enroll_div)
-                            div.append(mother_div)
-                        }
-                    } else if (xhr.readyState === 4 && xhr.status === 500) {
-                        alert(a_data.msg)
-                    } else if (xhr.readyState === 4 && xhr.status === 400) {
-                        alert(a_data.msg)
+            xhr.send(JSON.stringify({
+                academyname: document.getElementById('search-bar').value
+            }));
+        }
+        function choose_this_aca(btn) {
+            let xhr = new XMLHttpRequest()
+            xhr.open("POST", '/academy/choose_academy');
+            xhr.setRequestHeader("Content-Type", 'application/json')
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    if(data.result == 'success'){
+                        alert("학원 신청이 완료되었습니다.\n선생님께서 승인하실때 학원활동이 가능합니다.");
+                        location.replace("/myAcademy");
                     }
+                } else if(xhr.readyState === 4) {
+                    let data = JSON.parse(xhr.responseText);
+                    alert(data.msg);
+                    location.replace(location.href);
                 }
-                xhr.send(JSON.stringify({
-                    academyname: document.querySelector('.search-bar').value
-                }))
             }
-            function choose_this_aca(btn) {
-                    let xhr = new XMLHttpRequest()
-                    xhr.open("POST", '/academy/choose_academy');
-                    xhr.setRequestHeader("Content-Type", 'application/json')
-                    xhr.onreadystatechange = () => {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            alert("학원 신청이 완료되었습니다!")
-                            setTimeout(() => {
-                                window.location.href = "/"
-                            }, 1000);
-                        }
-                    }
-                    xhr.send(JSON.stringify({
-                        choosen_academy: btn.parentElement.parentElement.children[0].innerHTML,
-                    }))
-            }
-        </script>
+            xhr.send(JSON.stringify({
+                choosen_academy: academy_result[Number(btn.target.dataset.idx)],
+            }))
+        }
+    </script>
 </body>
 
 </html>

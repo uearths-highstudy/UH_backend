@@ -171,10 +171,6 @@ input { outline: unset; }
     border: none;
     cursor: pointer;
 }
-#search:hover {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
-}
-
 #result {
     position: absolute;
     top: 23%;
@@ -204,7 +200,7 @@ input { outline: unset; }
     border: none;
     border-radius: 8px;
     padding: 5px 15px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
     background: rgb(241, 241, 241);
     cursor: pointer;
 }
@@ -230,4 +226,11 @@ input { outline: unset; }
     bottom: 6%;
     right: 10%;
     padding: 7px 30px;
+}
+#enroll:hover, #locLocSearch:hover, #locKeySearch:hover {
+    color: rgb(241, 241, 241);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 9px 18px -12px inset, rgba(0, 0, 0, 0.3) 0px 10px 20px -15px inset;
+}
+#pagenext:hover, #pageprev:hover, #search:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 9px 18px -12px inset, rgba(0, 0, 0, 0.3) 0px 10px 20px -15px inset;
 }
