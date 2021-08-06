@@ -19,8 +19,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="./stylesheets/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="./stylesheets/sideBar.css">
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <% include ./header.ejs %>
 </head>
 <style>
     .btn {
@@ -39,7 +38,7 @@
                 style="font-weight: 700; font-style: italic; font-size: 35px; padding-top: 50px; font-family: 'STIX Two Text', serif; ">
                 High-Study</p>
             <p style="font-weight: 400; color: gray; margin-bottom: 30px;">로그인</p>
-            <form action="/account/login" method="POST">
+            <form action="/account/login" method="POST" onsubmit="login(event);">
                 <input type="text" min-length="1" required
                     style="width: 300px; height: 30px;  margin-bottom: 30px; font-size: 15px; font-family: 'Gothic A1', sans-serif;"
                     placeholder="아이디" name="uid" class="uid">
@@ -96,7 +95,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="id" type="email" class="validate" required>
+                            <input id="id" type="text" class="validate" required>
                             <label for="id">id</label>
                         </div>
                     </div>
@@ -111,67 +110,25 @@
                 var elems = document.querySelectorAll('.modal');
                 var instances = M.Modal.init(elems);
             });
-            let signup = document.querySelector('.signup');
-            signup.addEventListener("click", () => {
+            function login(e) {
+                e.preventDefault();
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', '/account/login');
-                xhr.setRequestHeader("Content-Type", "application/json")
+                xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         if (JSON.parse(xhr.responseText).result == 'success') {
-
-                        } 
-                    }else if(xhr.readyState === 4 && xhr.status === 400){
-                        alert("아이디(또는 이메일) 또는 비밀번호가 일치하지 않습니다.");
-                    }else if(xhr.readyState === 4 && xhr.status === 500){
-                        alert("서버에서 알 수 없는 에러가 발생했습니다.")
+                            location.replace("/");
+                        }
+                    }else if(xhr.readyState === 4){
+                        alert(JSON.parse(xhr.responseText).msg);
                     }
                 }
                 xhr.send(JSON.stringify({
                     uid: document.querySelector('.uid').value,
                     password: document.querySelector('.password').value
                 }))
-            })
-            document.querySelector('.find-id').addEventListener('click',()=>{
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/find_id');
-                xhr.setRequestHeader("Content-Type", "application/json")
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        if (JSON.parse(xhr.responseText).result == 'success') {
-                            alert(`당신의 아이디는 ${id}입니다`)
-                        } 
-                    }else if(xhr.readyState === 4 && xhr.status === 400){
-
-                    }else if(xhr.readyState === 4 && xhr.status === 500){
-                        alert("서버에서 알 수 없는 에러가 발생했습니다.")
-                    }
-                }
-                xhr.send(JSON.stringify({
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value
-                }))
-            })
-            document.querySelector('.find-password').addEventListener('click',()=>{
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/account/find_password');
-                xhr.setRequestHeader("Content-Type", "application/json")
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        if (JSON.parse(xhr.responseText).result == 'success') {
-                            alert(`당신의 비밀번호는 ${password}입니다`)
-                        } 
-                    }else if(xhr.readyState === 4 && xhr.status === 400){
-
-                    }else if(xhr.readyState === 4 && xhr.status === 500){
-                        alert("서버에서 알 수 없는 에러가 발생했습니다.")
-                    }
-                }
-                xhr.send(JSON.stringify({
-                    name: document.getElementById('name').value,
-                    id: document.getElementById('id').value
-                }))
-            })
+            }
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>

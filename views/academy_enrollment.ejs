@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/enrollment.css">
+    <% include ./header.ejs %>
+    <title>학원등록</title>
+</head>
+<body>
+    <% include ./sideBar.ejs %>
+    <div class="popup" onclick="downpop(event);">
+        <div class="w">
+            <h2 id="wh"></h2>
+            <form action="" method="POST" onsubmit="Asearch(event);">
+                <div class="searchBox">
+                    <input type="text" id="keyword" placeholder="">
+                    <button id="search" type="submit">검색 <i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <table id="result">
+                <thead>
+                    <tr>
+                        <td>주소</td>
+                        <td>선택</td>
+                    </tr>
+                </thead>
+                <tbody id="resultP"></tbody>
+            </table>
+            <input type="button" value="이전" id="pageprev">
+            <input type="button" value="다음" id="pagenext">
+            <span class="page"></span>
+        </div>
+    </div>
+    <div class="main">
+        <div class="container">
+            <h1>학원 등록</h1>
+            <input type="text" name="name" id="name" placeholder="학원 이름" autocomplete="off" required>
+            <div class="info">
+                <div class="loc">
+                    <input type="button" value="학원이름으로 찾기" id="locKeySearch">
+                    <input type="button" value="직접 입력" id="locLocSearch">
+                    <input type="text" name="loc" id="loc" placeholder="주소" disabled>
+                </div>
+            </div>
+            <div class="info1">
+                <input type="text" name="pnum" id="pnum" placeholder="전화번호" disabled>
+                <input type="text" name="expo" id="expo" placeholder="대표자명" required>
+            </div>
+            <button id="enroll">등록</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=28cd7863baaaf23b5f638eb18e1b13c0&libraries=services,clusterer,drawing"></script>
+    <script>
+        let places = new kakao.maps.services.Places();
+
+        let locKeySearch = document.getElementById("locKeySearch");
+        let locLocSearch = document.getElementById("locLocSearch");
+        let name = document.getElementById("name");
+        let loc = document.getElementById("loc");
+        let pnum = document.getElementById("pnum");
+        let expo = document.getElementById("expo");
+        let popup = document.querySelector(".popup");
+
+        let wh = document.getElementById("wh");
+        let word = document.getElementById("keyword");
+        let resultTable = document.getElementById("result");
+        let resultP = document.getElementById("resultP");
+
+        let pageprev = document.getElementById("pageprev");
+        let pagenext = document.getElementById("pagenext");
+        let page = document.querySelector(".page");
+
+        let enrollbtn = document.getElementById("enroll");
+
+        enrollbtn.addEventListener("click", enroll);
+
+        function enroll() {
+            if(!name.value || !loc.value || !pnum.value || !expo.value) {
+                alert("입력하지 않은 사항이 없는지 다시 한번 확인해주세요.");
+                return;
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/academy/enrollment');
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = () => {
+                if(xhr.status === 200 && xhr.readyState === 4) {
+                    alert("학원 등록에 성공하였습니다.");
+                    location.replace('/');
+                } else if(xhr.readyState === 4) {
+                    let data = JSON.parse(xhr.responseText);
+                    alert(data.msg);
+                }
+            }
+            xhr.send(JSON.stringify({
+                name: name.value,
+                loc: loc.value,
+                pnum: pnum.value,
+                expo: expo.value
+            }));
+        }
+
+        function Asearch(e) {
+            while(resultP.hasChildNodes()) { resultP.removeChild(resultP.firstChild); }
+            e.preventDefault();
+            function locResult(result, status, pagination) {
+                if(status === kakao.maps.services.Status.OK) {
+                    if(!pagination.hasNextPage) {
+                        pagenext.disabled = true;
+                        pagenext.classList.add("no");
+                    } else {
+                        pagenext.disabled = false;
+                        pagenext.classList.remove("no");
+                    }
+                    if(!pagination.hasPrevPage) {
+                        pageprev.disabled = true;
+                        pageprev.classList.add("no");
+                    } else {
+                        pageprev.disabled = false;
+                        pageprev.classList.remove("no");
+                    }
+                    for(let i in result) {
+                        let tr = document.createElement("tr");
+                        let address = document.createElement("td");
+                        let sel = document.createElement("td");
+
+                        address.innerHTML = result[i].address_name;
+                        sel.innerHTML = "선택";
+                        sel.dataset.idx = i;
+                        sel.dataset.page = pagination.current;
+
+                        tr.appendChild(address);
+                        tr.appendChild(sel);
+
+                        resultP.appendChild(tr);
+
+                        page.innerHTML = `${pagination.current} / ${pagination.last}`;
+
+                        sel.addEventListener("click", function(e) {setloc(e.target, result);});
+                    }
+
+                    pagenext.onclick = () => {
+                        if(pagination.hasNextPage) {
+                            while(resultP.hasChildNodes()) { resultP.removeChild(resultP.firstChild); }
+                            pagination.nextPage();
+                        }
+                    }
+                    pageprev.onclick = () => {
+                        if(pagination.hasPrevPage) {
+                            while(resultP.hasChildNodes()) { resultP.removeChild(resultP.firstChild); }
+                            pagination.prevPage();
+                        }
+                    }
+                }
+            }
+            places.keywordSearch(word.value, locResult);
+        }
+
+        function setloc(dt, result) {
+            let idx = Number(dt.dataset.idx);
+            loc.value = result[idx].address_name;
+            pnum.value = result[idx].phone;
+            popup.classList.remove("active");
+        }
+
+        locKeySearch.addEventListener("click", () => {
+            popup.classList.add("active");
+            wh.innerHTML = locKeySearch.value;
+            word.placeholder = "학원 명 입력";
+            pagenext.classList.remove("no");
+            pageprev.classList.remove("no");
+            word.value = name.value;
+            loc.disabled = true;
+            loc.classList.remove("on");
+            pnum.disabled = true;
+            pnum.classList.remove("on");
+            document.getElementById("search").click();
+            while(resultP.hasChildNodes()) { resultP.removeChild(resultP.firstChild); }
+        });
+        locLocSearch.addEventListener("click", () => {
+            loc.disabled = false;
+            loc.classList.add("on");
+            pnum.disabled = false;
+            pnum.classList.add("on");
+            loc.focus();
+        });
+
+        function downpop(e) {
+            if(e.target !== e.currentTarget) return;
+            popup.classList.remove("active");
+        }
+    </script>
+</body>
+</html>

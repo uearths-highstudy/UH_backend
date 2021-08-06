@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/register.css">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"
+        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <% include ./header.ejs %>
+    <style>
+        .btn {
+            background-color: #11101d;
+        }
+
+        .btn:hover {
+            background-color: #11101d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <div class="logo_name">하이스터디</div>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav_list">
+            <li>
+                <a href="#">
+                    <i class="material-icons mode_edit">mode_edit</i>
+                    <span class="links_name mode_edit_span">정보 입력</span>
+                </a>
+                <span class="tooltip">정보입력</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="material-icons email_verify">email</i>
+                    <span class="links_name email_verify_span">이메일 인증</span>
+                </a>
+                <span class="tooltip">이메일 인증</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-face face'></i>
+                    <span class="links_name face_span">프로필 선택</span>
+                </a>
+                <span class="tooltip">프로필 선택</span>
+            </li>
+            <li>
+                <a href="/">
+                    <i class='bx bx-arrow-back accrow_back'></i>
+                    <span class="links_name accrow_back_span">뒤로가기</span>
+                </a>
+                <span class="tooltip">뒤로가기</span>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="logo_content">
+            <div class="logo">
+                <img src="/images/logo.png" widtt="50px" height="50px" alt="하이스터디 로고">
+            </div>
+        </div>
+        <div class="main-content z-depth-3">
+            <div class="row get-profile">
+                <div class="row">
+                    <div style="width:80%;margin:auto; text-align: center;">
+                        <img src="/images/profiles/default-profile.png" alt="" id="profile_image">
+                        <div>
+                            <h5>프로필 선택</h5>하이스터디 내에서 사용하실 프로필사진을 선택하세요. <br>
+                            넘어가기를 누르신다면 회원님의 프로필은 기본 이미지로 대체됩니다. <br>
+                            확인을 누르시면 선택된 이미지를 회원님의 프로필사진으로 설정합니다.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width:60%;margin:auto">
+                            <form action="/account/profile_upload_r" method="POST" onsubmit="send_profile(event, this)"
+                                enctype="multipart/form-data" id="pro_form">
+                                <div class="file-field input-field">
+                                    <div class="btn orange accent-2">
+                                        <span>프로필사진 선택</span>
+                                        <input type="file" id="info-profile" name="proImage">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div class="input-field center">
+                                    <a href="/login" class="btn waves-effect waves-light to-next" name="action">넘어가기</a>
+                                    <button class="btn waves-effect waves-light choose-profile" type="submit"
+                                        name="action">확인</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        const info_profile = document.getElementById("info-profile");
+        info_profile.addEventListener("change", function() {
+            const file = this.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const result = reader.result;
+                    document.getElementById("profile_image").src = result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        function send_profile(e, form) {
+            e.preventDefault();
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/account/profile_upload_r');
+            let fd = new FormData(form);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText)
+                    if (JSON.parse(xhr.responseText).result == 'success') {
+                        document.querySelector('.accrow_back_span').innerHTML = '완료됨'
+                        document.querySelector('.accrow_back').innerHTML = 'check_circle'
+                        alert("회원가입이 성공적으로 완료되었습니다.")
+                        setTimeout(() => {
+                            window.location.href="/login"
+                        }, 1000);
+                    }
+                } else if (xhr.status === 400 && xhr.readyState === 4) {
+                    alert(JSON.parse(xhr.responseText).msg);
+                    location.replace(location.href);
+                }
+            }
+            xhr.send(fd);
+        }
+    </script>
+</body>
+
+</html>

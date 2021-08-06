@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+</head>
+<body>
+    <script>
+        let check = confirm("로그인 토큰이 만료되었습니다.\n로그아웃 하고 다시 로그인하시겠습니까?");
+        if(check) {
+            location.replace("/logout");
+        } else {
+            history.back();
+        }
+    </script>
+</body>
+</html>

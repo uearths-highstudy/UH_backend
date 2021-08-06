@@ -13,6 +13,7 @@ body {
     background: #11101d;
     padding: 6px 14px;
     transition: width 0.5s ease, box-shadow 0.5s ease;
+    z-index: 100000;
 }
 .sidebar.active {
     width: 240px;
@@ -26,11 +27,13 @@ body {
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateX(-200px);
 }
 .sidebar.active .logo_content .logo {
     opacity: 1;
     pointer-events: none;
+    transform: translateX(0%);
 }
 /* .logo_content .logo img {
     
@@ -121,30 +124,82 @@ body {
     opacity: 1;
     pointer-events: auto;
 }
-.sidebar .pofile_content {
+.sidebar .profile_content {
     position: absolute;
     color: #fff;
     bottom: 0;
     left: 0;
     width: 100%;
 }
+
+.sidebar .profile_content .pro-sel {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: -60px;
+    transform: translateX(-50%);
+    left: 50%;
+    border-radius: 12px;
+    transition: opacity 0.2s ease, top 0.2s ease;
+    display: none;
+}
+.sidebar.active .profile_content .pro-sel {
+    display: block;
+    width: 80%;
+    height: 65px;
+    box-shadow: rgba(70, 70, 70, 0.8) 0px 1px 3px, rgba(70, 70, 70, 0.7) 0px 1px 3px;
+}
+.sidebar.active .profile_content .pro-sel.active {
+    opacity: 1;
+    top: -80px;
+}
+.profile_content .pro-sel div,
+.profile_content .pro-sel div label {
+    width: 100%;
+    padding: 6px 10px;
+    background: #26243f;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+.profile_content .pro-sel div label {
+    background: none;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: unset;
+}
+.profile_content .pro-sel div:hover {
+    background: #1d1b31;
+}
+.profile_content .pro-sel .defaultPro {
+    border-bottom: 1px solid #302e50;
+    border-radius: 12px 12px 0 0;
+}
+.profile_content .pro-sel .changePro {
+    border-radius: 0 0 12px 0;
+}
+
 .sidebar .profile_content .profile {
     position: relative;
     padding: 10px 6px;
     height: 60px;
     transition: background 0.4s ease;
     background: none;
+    border-radius: 12px;
 }
 .sidebar.active .profile_content .profile {
     background: #1d1b31;
 }
 .profile_content .profile .profile_details {
-    cursor: pointer;
     display: flex;
     align-items: center;
     opacity: 0;
     pointer-events: none;
     white-space: nowrap;
+    transition: opacity 0.5s ease;
 }
 .sidebar.active .profile .profile_details {
     opacity: 1;
@@ -154,7 +209,8 @@ body {
     height: 45px;
     width: 45px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 15px;
+    cursor: pointer;
 }
 .profile .profile_details .name_job {
     margin-left: 10px;

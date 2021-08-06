@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내정보</title>
+    <link rel="stylesheet" href="/stylesheets/my_info.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"
+        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0/dist/chart.min.js"></script>
+    <% include ./header.ejs %>
+</head>
+
+<body style="display:flex">
+    <div style="width:5%">
+        <% include ./sideBar.ejs %>
+    </div>
+
+    <div class="main-content">
+        <div class="privacy z-depth-2">
+            <% if(lc) { %>
+                <div class="profile">
+                    <div class="circle">
+                        <img src="/images/profiles/<%=lc.unumh%>" style="width:100%;height:100%;" height="100%"
+                            onerror="this.src='/images/profiles/default-profile.png'">
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="name">
+                        <%= lc.name %>
+                    </div>
+                    <div class="uid">
+                        ID : <%= lc.uid %>
+                    </div>
+                    <div class="grade">
+                        <%= lc.grade %>
+                    </div>
+                    <div class="academy">
+                        학원 : <%= lc.academy %>    
+                    </div>
+                    <div class="age">
+                        나이 : <%= lc.age %>
+                    </div>
+                    <div class="email">
+                        이메일 : <%= lc.email %>
+                    </div>
+                    <div class="point">
+                        <div style="width: 40%;"><i class='bx bx-coin large'></i></div>
+                        <div style="width: 60%;padding-top: 12%;">포인트 내역 : 12,323p
+                        </div>
+                    </div>
+                    <img class="bottom" src='/images/logo.png'>
+                </div>
+                <% } %>
+        </div>
+        <div class="right-content ">
+            <div class="rate z-depth-2">
+                <div class="all-ranked">
+                    <div class="title"></div>
+                    <div>상위 XX% XX등</div>
+                    <div class="height:80%;width:100%; text-align:center"><canvas id="myChart" width="500%" height="300%"></canvas></div>
+                </div>
+                <div class="right-rate">
+                    <div class="title row">
+                        <div class="col s5">정답률</div>
+                        <div class="switch col s7">
+                            <label>
+                                Math
+                                <input type="checkbox" id="wheather">
+                                <span class="lever"></span>
+                                English
+                            </label>
+                        </div>
+                    </div>
+                    <canvas id="myChart2" width="500%" height="300%"></canvas>
+                </div>
+            </div>
+            <div class="a">
+            </div>
+            <div class="prac-wrong-answer z-depth-2">
+                <div class="title">오답유형 빈출</div>
+                <div style="display:flex;width:100%;height:90%;">
+                    <div class="math-part">
+                        <img src="/images/수학.png" width="80%" alt="">
+                        <div class="btn waves-effect waves-light math blue darken-3">응시하기</div>
+                    </div>
+                    <div class="eng-part">
+                        <img src="/images/영어.png" width="80%" alt="">
+                        <div class="btn waves-effect waves-light eng deep-orange accent-3">응시하기</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            window.onload = () => {
+                right_rate()
+                let value = document.querySelector('.grade').innerHTML
+                let ano
+                value = value.trim()
+                value = value.split('-');
+                if (value[0] == 'high') {
+                    ano = '고등학교'
+                }
+                else if (value[0] == 'middle') {
+                    ano = '중학교'
+                }
+                document.querySelector('.grade').innerHTML = '학년 : ' + ano + ' ' + value[1] + "학년"
+                document.querySelectorAll('.title')[0].innerHTML = ano + ' ' + value[1] + "학년들 중 나의 위치는?"
+
+                if(window.innerWidth <1600){
+                    document.getElementById('myChart').setAttribute('height', '400%')
+                    document.getElementById('myChart').setAttribute('width', '800%')
+                    document.getElementById('myChart2').setAttribute('height', '400%')
+                    document.getElementById('myChart2').setAttribute('width', '800%')
+                }
+            }
+            document.querySelector('.math').addEventListener("click", () => {
+                let xhr = new XMLHttpRequest()
+                xhr.open('POST', '');
+                xhr.setRequestHeader("Content-Type", "application/json")
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                    }
+                }
+                xhr.send(JSON.stringify({
+                }))
+            })
+            document.querySelector('.eng').addEventListener("click", () => {
+                let xhr = new XMLHttpRequest()
+                xhr.open('POST', '');
+                xhr.setRequestHeader("Content-Type", "application/json")
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                    }
+                }
+                xhr.send(JSON.stringify({
+                }))
+            })
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['상위 99%', '상위 80%', '상위 60%', '상위 30%', '상위 10%', '1~100등'],
+                    datasets: [{
+                        label: '퍼센트별 분포위치',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['a', 'b', 'c', 'd', 'e'],
+                    datasets: [{
+                        label: '퍼센트별 분포위치',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            document.getElementById("wheather").addEventListener('change', () => {
+                right_rate()
+            })
+
+            function right_rate() {
+                if (document.getElementById("wheather").checked == false) {
+                    let xhr = new XMLHttpRequest()
+                    xhr.open('POST', '/problem/math_weakpart');
+                    xhr.setRequestHeader("Content-Type", "application/json")
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            // if(JSON.parse(xhr.responseText).result == 'success'){
+
+                            // }    
+                        }
+                    }
+                    xhr.send(JSON.stringify({
+                        subject: 'math'
+                    }))
+                } else if (document.getElementById("wheather").checked == true) {
+                    let xhr = new XMLHttpRequest()
+                    xhr.open('POST', '/problem/eng_weakpart');
+                    xhr.setRequestHeader("Content-Type", "application/json")
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            if(JSON.parse(xhr.responseText).result == 'success'){
+
+                            }
+                        }
+                    }
+                    xhr.send(JSON.stringify({
+                        subject: 'english'
+                    }))
+                }
+            }
+            
+        </script>
+</body>
+
+
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학원찾기</title>
+    <link rel="stylesheet" href="/stylesheets/findacademy.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0//css/materialize.min.css"> -->
+    <script src="https://code.jquery.com/jquery-3.5.0.js"
+        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <% include ./header.ejs %>
+</head>
+
+<body>
+    <% include ./sideBar.ejs %>
+        <div class="main">
+            <div class="content z-depth-2">
+                <div class="search">
+                    <input class="search-bar" placeholder="학원 이름을 입력하세요" onkeyup="enterkey()">
+                    <div class="a-search" style="line-height: 90px;"><i class="material-icons samll">search</i></div>
+                </div>
+                <div class="result">
+                </div>
+            </div>
+        </div>
+        <script>
+            let isteacher
+            function enterkey() {
+                if (window.event.keyCode == 13) {
+                    findaca()
+                }
+            }
+            document.querySelector('.a-search').addEventListener("click", findaca)
+
+            function findaca() {
+                let div = document.querySelector(".result");
+                div.innerHTML = ""
+                let xhr = new XMLHttpRequest()
+                xhr.open('POST', "/academy/findacademy");
+                xhr.setRequestHeader("Content-Type", "application/json")
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let a_data = JSON.parse(xhr.responseText)
+                        for (let i = 0; i < a_data.data.length; i++) {
+
+                            let mother_div = document.createElement('div')
+                            let name_div = document.createElement('div')
+                            let address_div = document.createElement('div')
+                            let ceo_div = document.createElement('div')
+                            let num_div = document.createElement('div')
+                            let enroll_div = document.createElement('div')
+                            let enroll_btn = document.createElement('button')
+
+                            mother_div.classList.add('mother_div')
+                            name_div.classList.add('name_div')
+                            address_div.classList.add('address_div')
+                            ceo_div.classList.add('ceo_div')
+                            num_div.classList.add('num_div')
+                            enroll_btn.classList.add('btn')
+                            enroll_div.classList.add('enroll_div')
+                            enroll_btn.setAttribute('onclick', 'choose_this_aca(this)')
+
+                            name_div.innerHTML = a_data.data[i].name
+                            address_div.innerHTML = a_data.data[i].location
+                            ceo_div.innerHTML = a_data.data[i].exponent
+                            num_div.innerHTML = a_data.data[i].number
+                            enroll_btn.innerHTML = '가입신청'
+
+                            mother_div.appendChild(name_div)
+                            mother_div.appendChild(address_div)
+                            mother_div.appendChild(ceo_div)
+                            mother_div.appendChild(num_div)
+                            enroll_div.appendChild(enroll_btn)
+                            mother_div.appendChild(enroll_div)
+                            div.append(mother_div)
+                        }
+                    } else if (xhr.readyState === 4 && xhr.status === 500) {
+                        alert(a_data.msg)
+                    } else if (xhr.readyState === 4 && xhr.status === 400) {
+                        alert(a_data.msg)
+                    }
+                }
+                xhr.send(JSON.stringify({
+                    academyname: document.querySelector('.search-bar').value
+                }))
+            }
+            function choose_this_aca(btn) {
+                    let xhr = new XMLHttpRequest()
+                    xhr.open("POST", '/academy/choose_academy');
+                    xhr.setRequestHeader("Content-Type", 'application/json')
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            alert("학원 신청이 완료되었습니다!")
+                            setTimeout(() => {
+                                window.location.href = "/"
+                            }, 1000);
+                        }
+                    }
+                    xhr.send(JSON.stringify({
+                        choosen_academy: btn.parentElement.parentElement.children[0].innerHTML,
+                    }))
+            }
+        </script>
+</body>
+
+</html>

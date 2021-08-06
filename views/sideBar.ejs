@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div class="logo_content">
         <div class="logo">
-            <div class="logo_name">하이스터디</div>
+            <img src="/images/logo.png" height="45px" class="logo_name" alt="하이스터디 로고">
         </div>
         <i class="bx bx-menu" id="btn"></i>
     </div>
@@ -28,7 +28,7 @@
             <span class="tooltip">모의고사 문제</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/findacademy">
                 <i class="bx bx-search"></i>
                 <span class="links_name">학원찾기</span>
             </a>
@@ -42,8 +42,17 @@
             <span class="tooltip">내 학원</span>
         </li>
         <% if(lc) { %>
+            <% if(lc.job == 'teacher') { %>
+                <li>
+                    <a href="/academyEnrollment">
+                        <i class="bx bx-clinic"></i>
+                        <span class="links_name">학원 등록</span>
+                    </a>
+                    <span class="tooltip">학원 등록</span>
+                </li>
+            <% } %>
             <li>
-                <a href="#">
+                <a href="/info">
                     <i class="bx bxs-cog"></i>
                     <span class="links_name">내 정보</span>
                 </a>
@@ -68,9 +77,19 @@
     </ul>
     <% if(lc) { %>
         <div class="profile_content">
+            <div class="pro-sel">
+                <div class="defaultPro" onclick="depro();">기본 프로필로 설정</div>
+                <div class="changePro">
+                    <label for="prof">프로필 사진 변경</label>
+                    <form action="/account/profileUpload" method="POST" enctype="multipart/form-data" onsubmit="profileSub(event, this);">
+                        <input type="file" id="prof" name="proImage" style="display: none !important;" onchange="imgch(this);" accept="image/jpeg,image/png,image/jpg">
+                        <input type="submit" value="" style="display: none !important;" id="pcsub">
+                    </form>
+                </div>
+            </div>
             <div class="profile">
                 <div class="profile_details">
-                    <img src="/images/profiles/<%=lc.unumh%>" alt="" onerror="this.src='/images/profiles/default-profile.png'">
+                    <img src="/images/profiles/<%=lc.unumh%>" alt="" onerror="this.src='/images/profiles/default-profile.png'" onclick="pro_sel();">
                     <div class="name_job">
                         <div class="name"><%= lc.name %></div>
                         <div class="job"><%= lc.job %></div>
@@ -84,11 +103,62 @@
 <script>
     let btn = document.getElementById("btn");
     let sidebar = document.querySelector(".sidebar");
+    let prosel = document.querySelector(".pro-sel");
     btn.onclick = () => {
-        sidebar.classList.toggle("active");
+        try {
+            prosel.classList.remove("active");
+            sidebar.classList.toggle("active");
+        } catch {
+            sidebar.classList.toggle("active");
+        }
     }
 
     document.getElementById("log_out").onclick = () => {
         location.replace('/logout');
+    }
+
+    function pro_sel() {
+        prosel.classList.toggle("active");
+    }
+
+    function imgch(imginfo) {
+        let check = confirm(`${imginfo.files[0].name}\n프로필 이미지를 변경 하시겠습니까?`);
+        if(check) {
+            document.getElementById("pcsub").click();
+        } else {
+            prosel.classList.remove("active");
+        }
+    }
+    function profileSub(e, form) {
+        prosel.classList.remove("active");
+        e.preventDefault();
+        let formData = new FormData(form);
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/account/profileUpload', true);
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                if(data.result == 'success') { location.replace(location.href); }
+            }
+        }
+        xhr.send(formData);
+    }
+    function depro() {
+        prosel.classList.remove("active");
+        let check = confirm("기본 이미지로 변경하시겠습니까?");
+        if(check) {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "/account/setDefaultProfile");
+            xhr.setRequestHeader("Content-Type", "application/json")
+            xhr.onreadystatechange = () => {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    location.replace(location.href);
+                } else if(xhr.readyState === 4) {
+                    let data = JSON.parse(xhr.responseText);
+                    alert(data.msg);
+                }
+            }
+            xhr.send();
+        }
     }
 </script>

@@ -7,4 +7,4 @@ const dbConnection = mysql.createPool({
     database: process.env.DATABASE_DATABASE
 });
 
-module.exports = dbConnection;
+module.exports = dbConnection.promise();

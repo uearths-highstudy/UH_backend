@@ -1,0 +1,233 @@
+.main {
+    height: 100vh;
+    width: 100vw;
+    margin: auto;
+    position: relative;
+    background: rgb(241, 241, 241);
+}
+.container {
+    height: 50%;
+    width: 50%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background: white;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 40%;
+    left: 50%;
+}
+.main .container h1 {
+    /* transform: translateX(-50); */
+    text-align: center;
+    margin-top: 30px;
+}
+#name {
+    width: 80%;
+    border: none;
+    padding: 15px;
+    color: #fff;
+    font-size: 1em;
+    background: rgb(37, 36, 51);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 15px;
+    text-align: center;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 30%;
+}
+input { outline: unset; }
+
+.container .info {
+    width: 80%;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+}
+.container .info1 {
+    width: 80%;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+}
+.container .info .loc {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#loc {
+    width: 60%;
+    border: none;
+    padding: 15px;
+    color: #fff;
+    font-size: 1em;
+    background: rgb(20, 19, 27);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 15px;
+    text-align: center;
+}
+#pnum {
+    width: 50%;
+    border: none;
+    padding: 15px;
+    color: #fff;
+    font-size: 1em;
+    background: rgb(20, 19, 27);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 15px;
+    text-align: center;
+}
+#loc.on, #pnum.on {
+    background: rgb(37, 36, 51);
+}
+#locKeySearch, #locLocSearch, #enroll {
+    background: rgb(62, 51, 100);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+#locSearch:hover {
+    background: rgb(34, 29, 56);
+}
+#expo {
+    width: 40%;
+    height: 50px;
+    border: none;
+    background: rgb(37, 36, 51);
+    color: #fff;
+    font-size: 1em;
+    border-radius: 15px;
+    text-align: center;
+    padding: 15px;
+}
+.popup {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: -5;
+    transition: opacity 0.5s ease;
+    background: rgba(0, 0, 0, 0.8);
+}
+.popup.active {
+    z-index: 10000000;
+    opacity: 1;
+}
+.popup .w {
+    border-radius: 8px;
+    background: white;
+    width: 40%;
+    height: 90%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+}
+.popup .w #wh {
+    margin-top: 30px;
+    text-align: center;
+}
+.w .searchBox {
+    width: 80%;
+    position: absolute;
+    top: 15%;
+    transform: translateX(-50%);
+    left: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+#keyword {
+    width: 80%;
+    border: none;
+    padding: 15px;
+    color: #fff;
+    font-size: 1em;
+    background: rgb(37, 36, 51);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 15px;
+    text-align: center;
+}
+#search {
+    background:rgb(233, 233, 233);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 3px 15px;
+    color: #000;
+    border-radius: 15px;
+    text-align: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+#search:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+}
+
+#result {
+    position: absolute;
+    top: 23%;
+    transform: translateX(-50%);
+    left: 50%;
+    width: 80%;
+}
+#result td {
+    border-bottom: 1px solid darkgray;
+    padding: 5px;
+}
+#result thead {
+    text-align: center;
+    font-weight: bold;
+}
+#result tbody tr td:last-child {
+    text-align: center;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 1px 0px 1px;
+    background: rgb(248, 248, 248);
+    border-radius: 5px;
+}
+#pageprev, #pagenext {
+    position: absolute;
+    bottom: 4%;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+    background: rgb(241, 241, 241);
+    cursor: pointer;
+}
+#pageprev {
+    left: 35%;
+}
+#pagenext {
+    right: 35%;
+}
+#pageprev.no, #pagenext.no {
+    background: rgb(212, 211, 211);
+}
+.w .page {
+    position: absolute;
+    bottom: 4%;
+    transform: translateX(-50%);
+    left: 50%;
+}
+#enroll {
+    font-size: 1.1em;
+    background: rgb(134, 76, 136);
+    position: absolute;
+    bottom: 6%;
+    right: 10%;
+    padding: 7px 30px;
+}

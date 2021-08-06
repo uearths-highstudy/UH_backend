@@ -10,13 +10,26 @@ body{
     width: 500px;
     height: 700px;
     box-shadow: 3px 3px 3px 3px rgb(200, 200, 200) ;
-    
     margin: auto;
     margin-top: 120px;
     font-family: 'Gothic A1', sans-serif;
     text-align: center;
     background-color: white;
 }
+
+@media (max-height: 830px){
+    .square{
+        margin-top: 60px;
+    }
+}
+
+@media (max-height: 720px){
+    .square{
+        margin-top: 0px;
+    }
+}
+
+
 
 .find{
     color: black;

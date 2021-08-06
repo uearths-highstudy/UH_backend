@@ -1,0 +1,177 @@
+@media screen and (max-width: 1920px){
+    .main{
+    width: 1500px;
+    margin: auto;
+    display: block;
+    padding-top: 80px;
+    padding-left: 50px;
+
+}
+
+.banner{
+    display: block;
+    border: 1px solid black;
+
+    width: 1450px;
+    height: 100px;
+    margin: auto;
+    margin-top:50px;
+
+    padding-top: 37px;
+}
+
+.online{
+    display: block;
+    border: 1px solid black;
+
+    width: 325px;
+    height: 150px;
+
+    margin-top: 50px;
+    float: left;
+
+}
+
+.trial{
+    display: block;
+    border: 1px solid black;
+
+    width: 325px;
+    height: 150px;
+    margin-left: 50px;
+    margin-top: 50px;
+    float: left;
+
+}
+
+.find{
+    display: block;
+    border: 1px solid black;
+
+    width: 325px;
+    height: 150px;
+    margin-left: 50px;
+    margin-top: 50px;
+    float: left;
+
+}
+
+.event{
+    display: block;
+    border: 1px solid black;
+
+    width: 325px;
+    height: 150px;
+    margin-left: 50px;
+    margin-top: 50px;
+    float: left;
+    padding-top: 0;
+}
+
+.notice{
+    display: block;
+    
+
+    width: 1450px;
+    height: 250px;
+    margin-top: 50px;
+    float: left;
+
+}
+}
+
+.online
+,.trial
+,.find
+,.event{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1200px){
+
+    .main{
+        width: 775px;
+        margin: auto;
+        display: block;
+        padding-top: 50px;
+        padding-left: 75px;
+    }
+    
+    .banner{
+        display: block;
+        border: 1px solid black;
+    
+        width: 700px;
+        height: 100px;
+        margin: auto;
+        margin-top:50px;
+    
+        padding-top: 37px;
+    }
+    
+    .online{
+        display: block;
+        border: 1px solid black;
+    
+        width: 325px;
+        height: 150px;
+    
+        margin-top: 30px;
+        float: left;
+        padding-top: 0;
+    }
+    
+    .trial{
+        display: block;
+        border: 1px solid black;
+    
+        width: 325px;
+        height: 150px;
+        margin-left: 50px;
+        margin-top: 30px;
+        float: left;
+
+    }
+    
+    .find{
+        display: block;
+        border: 1px solid black;
+    
+        width: 325px;
+        height: 150px;
+        margin-left: 0%;
+        margin-top: 30px;
+        float: left;
+        padding-top: 0;
+    }
+    
+    .event{
+        display: block;
+        border: 1px solid black;
+    
+        width: 325px;
+        height: 150px;
+        margin-left: 50px;
+        margin-top: 30px;
+        float: left;
+        padding-top: 0;
+    }
+    
+    .notice{
+        display: block;
+        
+    
+        width: 700px;
+        height: 250px;
+        margin-top: 30px;
+        float: left;
+
+    }
+
+    .notice > img {
+        width: 700px;
+    }
+
+}
+
+
