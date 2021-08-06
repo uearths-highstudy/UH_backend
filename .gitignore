@@ -2,5 +2,5 @@
 
 .env
 
-public/images/profiles/
-!default-profile.png
+public/images/profiles/**
+!public/images/profiles/*.png
