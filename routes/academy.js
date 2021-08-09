@@ -23,6 +23,10 @@ router
     if(!token) return res.status(400).json({ result: 'no login', msg: '로그인이 되어있지 않습니다.' });
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) return res.status(500).json({ result: 'token err', msg: 'token 에러가 발생하였습니다.' });
+        let [check] = await dbConnection.execute("SELECT * FROM users WHERE id=?", [decoded.unum]);
+        let user_academys = JSON.parse(check[0]['academy']).academy;
+        let user_appli_academys = JSON.parse(check[0]['applied_academy']).academy;
+        if(user_academys.length+user_appli_academys.length >= 3) return res.status(400).json({ result: 'fail', msg: '이미 세 개 이상의 학원을 가입하거나 신청하였습니다.' });
         const [data_] = await dbConnection.execute("SELECT * FROM academy WHERE name=? AND location=? AND number=?", [req.body.name, req.body.loc, req.body.pnum]);
         if(data_.length < 1) {
             const [result] = await dbConnection.execute("INSERT INTO academy (name, users, teachers, exponent, location, number, applicant) VALUES (?, ?, ?, ?, ?, ?, ?)", [req.body.name, JSON.stringify({users:[]}), JSON.stringify({teachers:[decoded.unum]}), req.body.expo, req.body.loc, req.body.pnum, JSON.stringify({users:[]})]);
@@ -65,13 +69,17 @@ router
     if(!token) return res.status(400).json({ result: 'no login', msg: '로그인이 되어있지 않습니다.' });
     jwt.verify(token, config.secret, async (err, decoded) => {
         if(err) return res.status(500).json({ result: 'token err', msg: 'token 에러가 발생하였습니다.' });
+        let [check] = await dbConnection.execute("SELECT * FROM users WHERE id=?", [decoded.unum]);
+        let user_academys = JSON.parse(check[0]['academy']).academy;
+        let user_appli_academys = JSON.parse(check[0]['applied_academy']).academy;
+        if(user_academys.length+user_appli_academys.length >= 3) return res.status(400).json({ result: 'fail', msg: '이미 세 개 이상의 학원을 가입하거나 신청하였습니다.' });
         let [data] = await dbConnection.execute("SELECT * FROM academy WHERE id=? AND name=?", [req.body.choosen_academy.id, req.body.choosen_academy.name]);
         if(data.length < 1) return res.status(400).json({ result: 'not found', msg: '등록된 학원정보가 없습니다.' });
         let applicants = JSON.parse(data[0]['applicant']);
         if(applicants.users.indexOf(decoded.unum) !== -1) return res.status(400).json({ result: 'fail', msg: '이미 신청한 학원입니다.' });
         let users = JSON.parse(data[0]['users']).users;
         let teachers = JSON.parse(data[0]['teachers']).teachers;
-        if(users.indexOf(decoded.unum) !== -1 || teachers.indexOf(decoded.unum)) return res.status(400).json({ result: 'fail', msg: '이미 가입한 학원입니다.' });
+        if(users.indexOf(decoded.unum) !== -1 || teachers.indexOf(decoded.unum) !== -1) return res.status(400).json({ result: 'fail', msg: '이미 가입한 학원입니다.' });
         applicants.users.push(decoded.unum);
         let [result] = await dbConnection.execute("UPDATE academy SET applicant=? WHERE id=? AND name=?", [JSON.stringify(applicants), req.body.choosen_academy.id, req.body.choosen_academy.name]);
         if(result.affectedRows !== 1) return res.status(500).json({ result: 'err', msg: '학원 등록 신청하는 도중 에러가 발생하였습니다.' });
@@ -133,6 +141,67 @@ router
         } else {
             return res.status(400).json({ result: 'fail', msg: '선생님 계정이 아닙니다.' });
         }
+    });
+})
+.post('/cancel', async (req, res) => {
+    let token = req.cookies.user;
+    if(!token) return res.status(400).json({ result: 'no login', msg: '로그인이 되어있지 않습니다.' });
+    jwt.verify(token, config.secret, async (err, decoded) => {
+        if(err) return res.status(500).json({ result: 'token err', msg: 'token 에러가 발생하였습니다.' });
+        let [data] = await dbConnection.execute("SELECT * FROM users WHERE id=?", [decoded.unum]);
+        if(data.length < 1) return res.status(400).json({ result: 'not found', msg: '신청중인 학원이 없습니다.' });
+        let appli_academy = JSON.parse(data[0]['applied_academy']);
+        appli_academy.academy.splice(appli_academy.academy.indexOf(req.body.academy_id), 1);
+        let [result] = await dbConnection.execute("UPDATE users SET applied_academy=? WHERE id=?", [JSON.stringify(appli_academy), decoded.unum]);
+        if(result.affectedRows !== 1) return res.status(500).json({ result: 'err', msg: '학원 신청을 취소하는 도중 에러가 발생하였습니다.' });
+
+        let [data_] = await dbConnection.execute("SELECT * FROM academy WHERE id=?", [req.body.academy_id]);
+        let appli_user = JSON.parse(data_[0]['applicant']);
+        if(appli_user.users.indexOf(decoded.unum) !== -1) {
+            appli_user.users.splice(appli_user.users.indexOf(decoded.unum), 1);
+            let [result_] = await dbConnection.execute("UPDATE academy SET applicant=? WHERE id=?", [JSON.stringify(appli_user), req.body.academy_id]);
+            if(result_.affectedRows !== 1) return res.status(500).json({ result: 'err', msg: '학원 신청을 취소하는 도중 에러가 발생하였습니다.' });
+            res.status(200).json({ result: 'success' });
+        } else {
+            res.status(400).json({ result: 'fail', msg: '신청 중인 학원이 아닙니다.' });
+        }
+    });
+})
+.post('/accept', async (req, res) => {
+    let token = req.cookies.user;
+    if(!token) return res.status(400).json({ result: 'no login', msg: '로그인이 되어있지 않습니다.' });
+    jwt.verify(token, config.secret, async (err, decoded) => {
+        if(err) return res.status(500).json({ result: 'token err', msg: 'token 에러가 발생하였습니다.' });
+        let [academy] = await dbConnection.execute("SELECT * FROM academy WHERE id=?", [req.body.academy_id]);
+        if(academy.length < 1) return res.status(400).json({ result: 'fail', msg: '학원 아이디가 잘못되었습니다.' });
+        let academy_teacher = JSON.parse(academy[0]['teachers']).teachers;
+        if(academy_teacher.indexOf(Number(decoded.unum)) == -1) return res.status(400).json({ result: 'fail', msg: '학원의 선생님이 아닙니다.' });
+
+        let academy_applicants = JSON.parse(academy[0]['applicant']);
+
+        if(academy_applicants.users.indexOf(Number(req.body.applicant_id)) == -1) return res.status(400).json({ result: 'fail', msg: '신청자는 이 학원에 참가신청하지 않았습니다.' });
+        academy_applicants.users.splice(academy_applicants.users.indexOf(Number(req.body.applicant_id)), 1);
+        let academy_users = JSON.parse(academy[0]['users']);
+        if(academy_users.users.indexOf(Number(req.body.applicant_id)) !== -1) return res.status(400).json({ result: 'fail', msg: '이미 가입된 신청자입니다.' });
+        academy_users.users.push(Number(req.body.applicant_id));
+
+        let [appli_data] = await dbConnection.execute("SELECT * FROM users WHERE id=?", [req.body.applicant_id]);
+        if(appli_data.length < 1) return res.status(400).json({ result: 'fail', msg: '신청자의 정보가 존재하지 않습니다.' });
+
+        let appli_academy = JSON.parse(appli_data[0]['applied_academy']);
+        let user_applicant_data = JSON.parse(appli_data[0]['academy']);
+        
+        if(appli_academy.academy.indexOf(Number(req.body.academy_id)) == -1) return res.status(400).json({ result: 'fail', msg: '신청자는 이 학원에 참가신청하지 않았습니다.' });
+        appli_academy.academy.splice(appli_academy.academy.indexOf(Number(req.body.academy_id)), 1);
+        if(user_applicant_data.academy.indexOf(Number(req.body.academy_id)) !== -1) return res.status(400).json({ result: 'fail', msg: '이미 가입된 신청자입니다.' });
+        user_applicant_data.academy.push(Number(req.body.academy_id));
+
+        let [user_result] = await dbConnection.execute("UPDATE users SET academy=?, applied_academy=? WHERE id=?", [JSON.stringify(user_applicant_data), JSON.stringify(appli_academy), req.body.applicant_id]);
+        if(user_result.affectedRows !== 1) return res.status(500).json({ result: 'err', msg: '승인하는 과정에서 에러가 발생하였습니다.' });
+        
+        let [academy_result] = await dbConnection.execute("UPDATE academy SET users=?, applicant=? WHERE id=?", [JSON.stringify(academy_users), JSON.stringify(academy_applicants), req.body.academy_id]);
+        if(academy_result.affectedRows !== 1) return res.status(500).json({ result: 'err', msg: '승인하는 과정에서 에러가 발생하였습니다.' });
+        res.status(200).json({ result: 'success' });
     });
 })
 

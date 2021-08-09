@@ -3,6 +3,7 @@ body{
     height:100vh;
 }
 
+input:focus {outline:none;}
 .main{
     margin-top: 15px;
     height: 97%;
@@ -11,7 +12,12 @@ body{
     align-items: center;
     justify-content: center;
     }
-
+.main .academy_member{
+    width:25%;
+    text-align: center;
+    height:70px;
+    line-height: 70px;
+}
 .main .title{
     width:50%;
     margin:auto;
@@ -36,7 +42,7 @@ body{
 
 .aca-content{
     display:flex;
-    height: 97%;
+    height: 100%;
 }
 .problem_part{
     height:100%;
@@ -111,8 +117,9 @@ body{
 }
 .right_rate{
     width:30%;
-    border-left: 1px solid gray;
-    display:flex
+    border-left: 1px solid rgb(214, 214, 214);
+    display:flex;
+    height:100%;
 }
 .today_problem, .yesterday_problem, .last_weak_problem{
     padding:10px;
@@ -132,12 +139,221 @@ body{
     display:inline-block;
     cursor: pointer;
 }
+.right_rate .t_problem{
+    border:1px solid black;
+    width:250px;
+    height:120px;
+    border-radius: 15px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    line-height: 120px;
+    text-align: center;
+    cursor: pointer;
+    margin: auto;
+}
 
 .right_rate .sub_title{
     font-size: 2em;
     text-align: center;
 }
-.sub_title_info,.sub_title_myinfo,.sub_title_supplement{
-    width:40%;
-    margin:auto
+.sub_title,.sub_title_myinfo,.sub_title_supplement,.chart{
+    width:70%;
+    margin:auto;
+}
+
+.button-82-pushable {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-82-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
+    will-change: transform;
+    transform: translateY(2px);
+    transition:
+        transform
+        600ms
+        cubic-bezier(.3, .7, .4, 1);
+}
+
+.button-82-edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(
+        to left,
+        hsl(340deg 100% 16%) 0%,
+        hsl(340deg 100% 32%) 8%,
+        hsl(340deg 100% 32%) 92%,
+        hsl(340deg 100% 16%) 100%
+    );
+}
+
+.button-82-front {
+    display: block;
+    position: relative;
+    padding: 12px 27px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    color: white;
+    background: hsl(345deg 100% 47%);
+    will-change: transform;
+    transform: translateY(-4px);
+    transition:
+        transform
+        600ms
+        cubic-bezier(.3, .7, .4, 1);
+}
+
+@media (min-width: 768px) {
+    .button-82-front {
+        font-size: 1.25rem;
+        padding: 12px 42px;
+    }
+}
+
+.button-82-pushable:hover {
+    filter: brightness(110%);
+}
+
+.button-82-pushable:hover .button-82-front {
+    transform: translateY(-6px);
+    transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-front {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+}
+
+.button-82-pushable:hover .button-82-shadow {
+    transform: translateY(4px);
+    transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-shadow {
+    transform: translateY(1px);
+    transition: transform 34ms;
+}
+
+.button-82-pushable:focus:not(:focus-visible) {
+    outline: none;
+}
+.math-part{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    border:1px solid rgb(214, 214, 214);
+    width:70%;
+    text-align: center;
+}
+.chart{
+    display: flex;
+    width: 90%;
+}
+.myChart1
+,.myChart2{
+    width:50%;
+}
+.rback {
+    width: 100%;
+    height: 100%;
+    background: rgb(241, 241, 241);
+}
+.qmake {
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.qmake input {
+    width: 90%;
+    padding: 15px;
+    color: #fff;
+    border-radius: 15px;
+    background: #11101d;
+    outline: none;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+    margin-bottom: 25px;
+    cursor: pointer;
+}
+.qmake input:hover {
+    background: #2b2a44;
+}
+.qmake input:last-child {
+    margin-bottom: 0;
+}
+.applicant_student {
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    max-height: 50%;
+    overflow-y: auto;
+}
+.applicant_student h3 {
+    margin-bottom: 20px;
+}
+.applicant_student table {
+    width: 100%;
+    text-align: center;
+}
+.applicant_student table thead {
+    font-weight: bold;
+}
+.applicant_student table tbody tr td {
+    padding: 5px;
+}
+.applicant_student .accbtn, .applicant_student .rejbtn {
+    border-radius: 7px;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+.applicant_student .accbtn {
+    background: rgb(46, 46, 46);
+    color: #fff;
+}
+.applicant_student .accbtn:hover, .applicant_student .rejbtn:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 7px 15px -2px inset, rgba(0, 0, 0, 0.3) 0px 5px 15px -5px inset;
+}
+.no {
+    text-align: center;
 }

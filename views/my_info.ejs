@@ -36,11 +36,20 @@
                     <div class="uid">
                         ID : <%= lc.uid %>
                     </div>
-                    <div class="grade">
-                        <%= lc.grade %>
-                    </div>
+                    <% if(lc.job == 'student'){%>
+                        <div class="grade">
+                            <%= lc.grade %>
+                        </div>
+                    <% } else{ %>
+                        <div class="job">
+                            직업 :   <%= lc.job %>
+                        </div>
+                    <% } %>
                     <div class="academy">
-                        학원 : <%= lc.academy %>    
+                        학원 : 
+                    <% for(let name of academys) { %>
+                        <%= name.name %>
+                    <% } %>
                     </div>
                     <div class="age">
                         나이 : <%= lc.age %>

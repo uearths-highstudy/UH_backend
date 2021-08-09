@@ -11,16 +11,69 @@
 <body>
     <% include ./sideBar.ejs %>
     <div class="main">
-        <div class="container">
-            <table>
-                <tbody id="result">
-                    
-                </tbody>
-            </table>
+        <h1>내 학원 목록</h1>
+        <div class="applied">
+            <h2>신청 대기중인 학원</h2>
+            <% if(appli_academy) { %>
+                <table>
+                    <tbody>
+                        <% for(let i of appli_academy) { %>
+                            <tr>
+                                <td><%= i.name %></td>
+                                <td><%= i.exponent %></td>
+                                <td><input type="button" value="신청 취소" class="wait" data-idx="<%= i.id %>" data-aname="<%= i.name %>" onclick="academy_cancel(this);"></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <span class="no">신청한 학원이 없습니다.</span>
+            <% } %>
+        </div>
+        <div class="regis">
+            <h2>가입한 학원</h2>
+            <% if(academy) { %>
+                <table>
+                    <tbody>
+                        <% for(let i of academy) { %>
+                            <tr>
+                                <td><%= i.name %></td>
+                                <td><%= i.exponent %></td>
+                                <td><input type="button" value="접속" class="join" onclick="join_aca(this);" data-idx="<%= i.id %>"></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <span class="no">가입한 학원이 없습니다.</span>
+            <% } %>
         </div>
     </div>
     <script>
-
+        function join_aca(btn) {
+            let academy_id = btn.dataset.idx;
+            location.replace(location.href+`/${academy_id}`);
+        }
+        function academy_cancel(btn) {
+            let academy_name = btn.dataset.aname;
+            let check = confirm(`${academy_name}\n정말로 신청 취소를 하시겠습니까?`);
+            if(check) {
+                let academy_id = Number(btn.dataset.idx);
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/academy/cancel');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        alert('신청 취소가 완료되었습니다.');
+                        location.replace(location.href);
+                    } else if(xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(data.msg);
+                    }
+                }
+                xhr.send(JSON.stringify({ academy_id }));
+            }
+        }
     </script>
 </body>
 </html>

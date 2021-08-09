@@ -7,18 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/myacademy.css">
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <% include ./header.ejs %>
         <title>내 학원</title>
 </head>
-
 <body style="display:flex">
     <div style="width:5%">
         <% include ./sideBar.ejs %>
     </div>
     <div class="main">
+        <div style="display: flex;">
+            <div style="width: 25%;">
+            </div>
         <div class="title">
-            내 학원
+            <%= academy_name %>
         </div>
+        <p>
+        <div class="academy_member">
+            <a href="#ex1" rel="modal:open"><svg xmlns="http://www.w3.org/2000/svg" class="get-member" style="cursor:pointer" viewBox="0 0 24 24" width="50" height="50" style="fill: rgba(0, 0, 0, 1);"><path d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z"></path><path d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z"></path></svg></a>
+        </div>
+    </div>
         <% if(lc){ %>
             <div class="content">
                 <div class="aca-content" onclick="$('#academys').slideUp()">
@@ -30,7 +41,7 @@
                                 <button type="submit" class="get_date_btn">확인</button>
                             </form>
                             <form action="/academy/inputpincode" method="POST" id='getPincode'>
-                                <div style="width:30%;height:80px;line-height: 80px;">핀 코드 입력하기</div>
+                                <div style="width:30%;height:80px;line-height: 80px;">실시간 문제풀이</div>
                                 <input type="text" placeholder="PIN 코드를 입력하세요" class="get_code">
                                 <button type="submit" class="get_date_btn">확인</button>
                             </form>
@@ -91,89 +102,302 @@
                         </div>
                     </div>
                     <div class="right_rate">
-                        <div style="width:90%;margin:auto;height: 90%;">
-                            <div class="sub_title">
-                                문제 제목
+                        <% if(lc.job == 'student'){ %>
+                            <div style="width:90%;margin:auto;height: 90%; position: relative;">
+                                <div class="sub_title">
+                                    문제 제목
+                                </div>
+                                <br>
+                                <div class="t_problem">
+                                    출제자: 
+                                </div>
+                                <br>
+                                <div class="sub_title_myinfo">
+                                    총 푼 사람: <br>
+                                    푼 사람: <br>
+                                    푼 시간: <br>
+                                    정답률: <br>
+                                </div>
+                                <br>
+                                
+                                <div class="chart">
+                                    <label for="">동학년</label>
+                                    <canvas id="myChart1" width="180px"height="200px"></canvas>
+                                    <label for="">나</label>
+                                    <canvas id="myChart2" width="180px"height="200px"></canvas>
+                                </div>
+                                <div class="sub_title_supplement">
+                                    <div class="math-part">
+                                        <label for="">변형문제 풀기</label>
+                                        <img src="/images/수학.png" width="100%" height="100px" alt="">
+                                        <!-- HTML !-->
+                                        <button class="button-82-pushable" role="button">
+                                            <span class="button-82-shadow"></span>
+                                            <span class="button-82-edge"></span>
+                                            <span class="button-82-front text">
+                                                풀기
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <br>
-                            <div class="sub_title_info">
-                                출제자: <br>
-                                출제 날짜: <br>
-                                총 푼 사람: <br>
+                        <% } else if(lc.job == 'teacher') { %>
+                            <div class="rback">
+                                <div class="qmake">
+                                    <input type="button" value="문제 만들기">
+                                    <input type="button" value="실시간 문제 질문 만들기">
+                                    <input type="button" value="실시간 문제 시작">
+                                </div>
+                                <div class="applicant_student">
+                                    <h3>신청한 학생</h3>
+                                    <% if(applicant.length > 0) { %>
+                                        <table id="stu_app">
+                                            <thead>
+                                                <td>이름</td>
+                                                <td>아이디</td>
+                                                <td>나이</td>
+                                                <td>학년</td>
+                                                <td>승인</td>
+                                                <td>거절</td>
+                                            </thead>
+                                            <tbody id="appli_users">
+                                                <% for(let i of applicant) { %>
+                                                    <% if(i.job == 'student') { %>
+                                                        <tr>
+                                                            <td><%= i.name %></td>
+                                                            <td><%= i.uid %></td>
+                                                            <td><%= i.age %></td>
+                                                            <td><%= kg[i.grade] %></td>
+                                                            <td><input type="button" value="승인" data-idx="<%= i.id %>" data-ai="<%= academy_id %>" class="accbtn" onclick="user_accept(this);"></td>
+                                                            <td><input type="button" value="거절" data-idx="<%= i.id %>" data-ai="<%= academy_id %>" class="rejbtn" onclick="user_reject(this);"></td>
+                                                        </tr>
+                                                    <% } %>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    <% } else { %>
+                                        <span class="no">신청한 사람이 없습니다.</span>
+                                    <% } %>
+                                </div>
                             </div>
-                            <br>
-                            <div class="sub_title_myinfo">
-                                푼 사람: <br>
-                                푼 시간: <br>
-                                정답률: <br>
-                            </div>
-                            <br>
-                            <div class="sub_title_supplement">
-                                보충문제 풀기
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
             </div>
-            <% } %>
-    </div>
-    <% if(lc.job=='teacher' ) { %>
-        <script>
-
-        </script>
         <% } %>
-            <script>
-                let updown = false
-                let date = new Date()
-                window.onload = () => {
-                    document.querySelector('.today_date').innerHTML = date.getMonth() + 1 + '월 ' + date.getDate() + '일'
-                    document.querySelector('.yesterday_date').innerHTML = date.getMonth() + 1 + '월 ' + (date.getDate() - 1) + '일'
-                    // let xhr = new XMLHttpRequest()
-                    // xhr.open("POST", '/academy/get_applicant');
-                    // xhr.setRequestHeader('Content-Type', 'application/json')
-                    // xhr.onreadystatechange = ()=>{
-                    //     if(xhr.status === 200 && xhr.readyState === 4){
-                    //         console.log(JSON.parse(xhr.responseText))
-                    //     }
-                    //     else if(xhr.readyState === 4){
-                    //         alert(JSON.parse(xhr.responseText).msg)
-                    //         window.location.href = '/'
-                    //     }
-                    // }
-                    // xhr.send()
-                }
-                function click_this_academy(a) {
+        <div id="ex1" class="modal">
+            <table style="width:100%;text-align: center;">
+                <thead style="width:100%;font-weight: bold;">
+                    <tr style="width:100%">
+                        <td style="width:30%">번호</td>
+                        <td style="width:70%">이름</td>
+                    </tr>
+                </thead>
+                <tbody style="width:100%">
+                    <% for(let i in users_data){%>
+                        <tr style="width:100%">
+                            <td style="width:30%"><%= String(Number(i)+1) %></td>
+                            <td style="width:70%"><%= users_data[i].name %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <% if(lc.job=='teacher') { %>
+        <script>
+            let appli_users = document.getElementById("appli_users");
+            function user_accept(btn) {
+                let userId = btn.dataset.idx;
+                let ai = btn.dataset.ai;
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/academy/accept');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        appli_users.removeChild(btn.parentNode.parentNode)
+                        if(appli_users.children.length == 0) {
+                            let stu_app = document.getElementById("stu_app");
+                            let applicant_student = document.querySelector(".applicant_student");
+                            applicant_student.removeChild(stu_app);
 
-                    $('#academys').slideUp()
-                }
-                function updown_func() {
-                    if (updown == false) {
-                        console.log('good')
-                        $('#academys').slideUp();
-                        updown = true
-                    } else if (updown == true) {
-                        $('#academys').slideDown();
-                        updown = false
+                            let nospan = document.createElement("span");
+                            nospan.classList.add("no");
+                            nospan.innerHTML = "신청한 사람이 없습니다.";
+                            applicant_student.appendChild(nospan);
+                        }
+                    } else if(xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(data.msg);
                     }
                 }
-                function send_particular_problem() {
-                    console.log(document.querySelector(".get_date").value)
-                    // let xhr = new XMLHttpRequest()
-                    // xhr.open('POST', '/academy/get_particular_problem')
-                    // xhr.setRequestHeader("Content-Type", 'application/json')
-                    // xhr.onreadystatechange = () => {
-                    //     if (xhr.status === 200 && xhr.readyState === 4) {
-                    //         console.log(JSON.parse(xhr.responseText))
-                    //     }
-                    //     else if (xhr.readyState === 4) {
-                    //         alert(JSON.parse(xhr.responseText).msg)
-                    //     }
-                    // }
-                    // xhr.send(JSON.stringify({
-                    //     date : document.querySelector(".get_date").value
-                    // }))
+                xhr.send(JSON.stringify({
+                    academy_id: ai,
+                    applicant_id: userId
+                }));
+            }
+            function user_reject(btn) {
+                let userId = btn.dataset.idx;
+                let ai = btn.dataset.ai;
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/academy/reject');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        appli_users.removeChild(btn.parentNode.parentNode);
+                        if(appli_users.children.length == 0) {
+                            let stu_app = document.getElementById("stu_app");
+                            let applicant_student = document.querySelector(".applicant_student");
+                            applicant_student.removeChild(stu_app);
+
+                            let nospan = document.createElement("span");
+                            nospan.classList.add("no");
+                            nospan.innerHTML = "신청한 사람이 없습니다.";
+                            applicant_student.appendChild(nospan);
+                        }
+                    } else if(xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(data.msg);
+                    }
                 }
+                xhr.send(JSON.stringify({
+                    academy_id: ai,
+                    applicant_id: userId
+                }));
+            }
+            function accept_all() {}
+        </script>
+    <% } %>
+    <script>
+        let updown = false
+        let date = new Date()
+        window.onload = () => {
+            document.querySelector('.today_date').innerHTML = date.getMonth() + 1 + '월 ' + date.getDate() + '일'
+            document.querySelector('.yesterday_date').innerHTML = date.getMonth() + 1 + '월 ' + (date.getDate() - 1) + '일'
+        }
+        function click_this_academy(a) {
+
+            $('#academys').slideUp()
+        }
+        function updown_func() {
+            if (updown == false) {
+                console.log('good')
+                $('#academys').slideUp();
+                updown = true
+            } else if (updown == true) {
+                $('#academys').slideDown();
+                updown = false
+            }
+        }
+        function send_particular_problem() {
+            console.log(document.querySelector(".get_date").value)
+            // let xhr = new XMLHttpRequest()
+            // xhr.open('POST', '/academy/get_particular_problem')
+            // xhr.setRequestHeader("Content-Type", 'application/json')
+            // xhr.onreadystatechange = () => {
+            //     if (xhr.status === 200 && xhr.readyState === 4) {
+            //         console.log(JSON.parse(xhr.responseText))
+            //     }
+            //     else if (xhr.readyState === 4) {
+            //         alert(JSON.parse(xhr.responseText).msg)
+            //     }
+            // }
+            // xhr.send(JSON.stringify({
+            //     date : document.querySelector(".get_date").value
+            // }))
+        }
+
+        document.querySelector('.get-member').addEventListener('click', ()=>{
+            let xhr = new XMLHttpRequest()
+            xhr.open("POST", '/academy/')
+            xhr.setRequestHeader("Content-Type", "application/json")
+            xhr.onreadystatechange = ()=>{
+                if(xhr.readyState === 4 && xhr.status === 200){
+                    
+                }
+            }
+            xhr.send(JSON.stringify({
+
+            }))
+        })
+    </script>
+    <% if(lc.job == 'student') { %>
+    <script>
+        var ctx = document.getElementById('myChart1').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['a', 'b'],
+                    datasets: [{
+                        label: '퍼센트별 분포위치',
+                        data: [12, 19],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        
+        var ctx = document.getElementById('myChart2').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['a', 'b'],
+                    datasets: [{
+                        label: '퍼센트별 분포위치',
+                        data: [12, 19],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
             </script>
+        <%  } %>
 </body>
 
 </html>
