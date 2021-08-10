@@ -286,7 +286,6 @@ input:focus {outline:none;}
 .qmake {
     width: 90%;
     margin: auto;
-    margin-top: 30px;
     margin-bottom: 30px;
     background: white;
     border-radius: 12px;
@@ -323,23 +322,29 @@ input:focus {outline:none;}
     border-radius: 12px;
     padding: 30px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    max-height: 50%;
+    max-height: 30%;
     overflow-y: auto;
+    position: relative;
 }
-.applicant_student h3 {
+.applicant_student h3,
+.applicant_teachers h3 {
     margin-bottom: 20px;
 }
-.applicant_student table {
+.applicant_student table,
+.applicant_teachers table {
     width: 100%;
     text-align: center;
 }
-.applicant_student table thead {
+.applicant_student table thead,
+.applicant_teachers table thead {
     font-weight: bold;
 }
-.applicant_student table tbody tr td {
+.applicant_student table tbody tr td,
+.applicant_teachers table tbody tr td {
     padding: 5px;
 }
-.applicant_student .accbtn, .applicant_student .rejbtn {
+.applicant_student .accbtn, .applicant_student .rejbtn,
+.applicant_teachers .teacher_accbtn, .applicant_teachers .user_rejbtn {
     border-radius: 7px;
     padding: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
@@ -347,13 +352,42 @@ input:focus {outline:none;}
     outline: none;
     border: none;
 }
-.applicant_student .accbtn {
+.applicant_student .accbtn,
+.applicant_teachers .teacher_accbtn {
     background: rgb(46, 46, 46);
     color: #fff;
 }
-.applicant_student .accbtn:hover, .applicant_student .rejbtn:hover {
+.applicant_student .accbtn:hover, .applicant_student .rejbtn:hover,
+.applicant_teachers .teacher_accbtn:hover, .applicant_teachers .user_rejbtn:hover {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 7px 15px -2px inset, rgba(0, 0, 0, 0.3) 0px 5px 15px -5px inset;
 }
 .no {
     text-align: center;
+}
+#allAccept, #t_allAccept {
+    position: absolute;
+    outline: none;
+    border: none;
+    top: 20px;
+    right: 10px;
+    padding: 5px 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+#allAccept:hover, #t_allAccept:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 7px 15px -2px inset, rgba(0, 0, 0, 0.3) 0px 5px 15px -5px inset;
+}
+.applicant_teachers {
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    max-height: 30%;
+    overflow-y: auto;
+    position: relative;
 }

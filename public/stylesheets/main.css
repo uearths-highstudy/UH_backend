@@ -212,3 +212,21 @@
     text-decoration: underline;
 }
 
+.to_write_button{
+    width:100px;
+    float:right;
+    margin-top: 30px;
+    height:40px;
+    border-radius: 30px;
+    border-style: none;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+    background-color:#08182b;
+    color:white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+}
+.to_write_button:focus{
+    background-color:#08182b;
+    
+}

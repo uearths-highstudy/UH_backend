@@ -147,8 +147,8 @@ router
         }
         let academy = JSON.parse(data[0]['academy']).academy;
         if(academy.length+appli_academy.length < 1) return res.send("<script>alert('학원을 한 개 이상 가입해주세요.');location.replace('/findacademy');</script>");
-        if(academy.length+appli_academy.length == 1) return res.redirect(`/myacademy/${academy[0]}`);
-        else {
+        if(academy.length == 1) return res.redirect(`/myacademy/${academy[0]}`);
+        else if(academy.length > 0) {
             let query = "SELECT id, name, exponent FROM academy WHERE id IN (";
             for(let i of academy) {
                 if(i == academy[academy.length-1]) {query += String(i);}
@@ -157,6 +157,8 @@ router
             query += ")";
             let [academys] = await dbConnection.execute(query);
             res.locals.academy = academys;
+            return res.render('myAcademys');
+        } else {
             return res.render('myAcademys');
         }
     });

@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>글쓰기</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/stylesheets/notice.css">
-    <% include ./header.ejs %>
+  <meta charset="UTF-8">
+  <title>글쓰기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/stylesheets/notice.css">
+  <% include ./header.ejs %>
 </head>
+
 <body>
-  <% include ./sideBar.ejs %>
-  <div class="outer">
+  <div style="width:4%">
+    <% include ./sideBar.ejs %>
+  </div>
+  <!-- <div class="outer">
       <form action="index.ejs" method="post">
           <p>제목 : <input type="text" name="title"/></p>
           <p>작성자 : <input type="text" name="wirter"/></p>
@@ -20,9 +24,45 @@
           <p>내용 : <input type="text" name="contents"/></p>
         <input type="submit"/>
       </form>
-  </div>
+  </div> -->
 
+  <div class="main">
+    <div class="form_outer">
+      <form action="/index/notice" method="POST">
+        <div class="row" style="height:100px">
+          <div class="label">제목</div>
+          <input type="text" class="title" placeholder="제목을 입력하세요">
+        </div>
+        <div class="row" style="height:100px">
+          <div style="display: flex;width:80%;margin:auto">
+            <div class="label" style="width:45%;">작성자 이름</div>
+            <div style="width:10%"></div>
+            <div class="label" style="width:45%">작성 일자</div>
+          </div>
+          <div style="display: flex; width:80%;margin:auto">
+            <div class="name" style="width:45%;">
+              <%=lc.name %>
+            </div>
+            <div style="width:10%"></div>
+            <div class="date" style="width:45%;">
+              <%= new Date().getFullYear() + '년 ' +(new Date().getMonth() + 1) + '월 ' +new Date().getDate()+'일' %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label" style="width:80%;text-align: left;margin:auto">내용</div>
+          <input type="text"placeholder="내용을 입력하세요" class="notice_content">
+        </div>
+        <div class="row" style="height:100px">
+          <button type="submit" class="post_btn">글 올리기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+  </script>
 </body>
+
 </html>
 
 <!--<div class="container">
@@ -33,7 +73,7 @@
 <!-- placeholder 속성 입력한 데이터가 없는 경우 배경으로 나타난다.실제적으로 입력을 100자까지로 지정 -->
 <!-- required 속성을 설정하면 필수입력 사항이된다. -->
 <!-- pattern 속성을 이용한 정규표현식으로 데이터의 유효성 검사를 할 수 있다. -->
-      <!--<input type="text" class="form-control" id="title"
+<!--<input type="text" class="form-control" id="title"
        placeholder="제목 입력(4-100)" name="title"
        maxlength="100" required="required"
        pattern=".{4,100}">
@@ -42,7 +82,7 @@
    <label for="content">내용</label>-->
 <!--  여러줄의 데이터를 입력하고 하고자 할때 textarea 태그를 사용한다. -->
 <!--  textarea 안에 있는 모든 글자는 그대로 나타난다. 공백문자, tag, enter -->
-   <!--<textarea class="form-control" rows="5" id="content"
+<!--<textarea class="form-control" rows="5" id="content"
     name="content" placeholder="내용 작성"></textarea>
  </div>
     <div class="form-group">
@@ -56,4 +96,3 @@
 </body>
 </html>
 -->
-

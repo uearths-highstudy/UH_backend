@@ -1,9 +1,11 @@
 body{
-    margin:0;
+    margin: 0;
     height: 100vh;
-    overflow:hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 .main{
+    margin: 0;
     height:100vh;
     display: flex;
     position: absolute;
@@ -13,11 +15,13 @@ body{
 .problem_part{
     height:100%;
     width:50%;
+    display: flex;
 }
 .note_part{
     width:50%;
     border-left-style: none;
     display: flex;
+    height:100%;
 }
 .num_list{
     display: flex;
@@ -27,6 +31,10 @@ body{
     text-align: center;
     line-height: 100px;
     border-right: 1px solid rgb(241, 241, 241);
+}
+.question_part{
+    width:100%;
+    height: 100%;
 }
 .num{
     height:10%;
@@ -107,6 +115,6 @@ body{
     background-color: rgb(0, 225, 255);
 }
 .enabledrawing{
-    width:100%;
+    width:98%;
     height:100%;
 }

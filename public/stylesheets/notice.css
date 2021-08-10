@@ -2,9 +2,11 @@
 
 body {
     font-family: 'Gothic A1', sans-serif;
+    justify-content: center;
+    display: flex;
 }
 
-.outer{
+/* .outer{
     display: block;
     margin: auto;
     width: 700px;
@@ -16,5 +18,87 @@ form{
     font-size: 30px;
 
     padding-top: 100px;
-}
+} */
+input:focus {outline:none;}
+.main{
+    width: 80%;
+    margin:auto;
+    border:1px solid black;
+    border: 1px solid rgb(214, 214, 214);
+    height:90vh;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    justify-content: center;
+    display: flex;
 
+}
+.form_outer{
+    width:90%;
+    height:85%; 
+    margin:auto;
+    text-align: center;
+}
+.row{
+    margin:auto;
+    width:80%;
+    line-height: 70px;
+}
+.row .title{
+    width:60%;
+    height:40px;
+    border:2px solid #1d1b31;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.row .name{
+    height:40px;
+    border: 2px solid #1d1b31;
+    border-radius: 10px;
+    line-height: 40px;
+    text-align: center;
+    margin:auto;
+    margin-top: 15px;
+    font-size: 15px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.row .date{
+    height:40px;
+    border: 2px solid #1d1b31;
+    border-radius: 10px;
+    line-height: 40px;
+    text-align: center;
+    margin:auto;
+    margin-top: 15px;
+    font-size: 15px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.row .label{
+    font-size: 15px;
+    height:20px;
+    text-align: center;
+    color:black;
+    display: block;
+}
+.row .notice_content{
+    margin-top: 15px;
+    width:80%;
+    height:400px;
+    border:2px solid #1d1b31;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.row .post_btn{
+    margin-top: 30px;
+    background-color: #1d1b31;
+    height:50px;
+    color:white;
+    line-height: 50px;
+    width:30%;
+    border-radius: 20px;
+    font-size: 15px;
+    border-style: none;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}

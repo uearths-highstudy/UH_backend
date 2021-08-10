@@ -151,6 +151,7 @@
                                 <div class="applicant_student">
                                     <h3>신청한 학생</h3>
                                     <% if(applicant.length > 0) { %>
+                                        <input type="button" value="모두 승인" data-ai="<%= academy_id %>" onclick="accept_all(this);" id="allAccept">
                                         <table id="stu_app">
                                             <thead>
                                                 <td>이름</td>
@@ -170,6 +171,34 @@
                                                             <td><%= kg[i.grade] %></td>
                                                             <td><input type="button" value="승인" data-idx="<%= i.id %>" data-ai="<%= academy_id %>" class="accbtn" onclick="user_accept(this);"></td>
                                                             <td><input type="button" value="거절" data-idx="<%= i.id %>" data-ai="<%= academy_id %>" class="rejbtn" onclick="user_reject(this);"></td>
+                                                        </tr>
+                                                    <% } %>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    <% } else { %>
+                                        <span class="no">신청한 사람이 없습니다.</span>
+                                    <% } %>
+                                </div>
+                                <div class="applicant_teachers">
+                                    <h3>신청한 선생님</h3>
+                                    <% if(applicant.length > 0) { %>
+                                        <input type="button" value="모두 승인" data-ai="<%= academy_id %>" onclick="teacher_accept_all(this);" id="t_allAccept">
+                                        <table id="tea_app">
+                                            <thead>
+                                                <td>이름</td>
+                                                <td>아이디</td>
+                                                <td>승인</td>
+                                                <td>거절</td>
+                                            </thead>
+                                            <tbody id="appli_teachers">
+                                                <% for(let i of applicant) { %>
+                                                    <% if(i.job == 'teacher') { %>
+                                                        <tr>
+                                                            <td><%= i.name %></td>
+                                                            <td><%= i.uid %></td>
+                                                            <td><input type="button" value="승인" data-idx="<%= i.id %>" data-ai="<%= academy_id %>" class="teacher_accbtn" onclick="teacher_accept(this);"></td>
+                                                            <td><input type="button" value="거절" data-idx="<%= i.id %>" data-ai="<%= academy_id %>" class="user_rejbtn" onclick="teacher_reject(this);"></td>
                                                         </tr>
                                                     <% } %>
                                                 <% } %>
@@ -207,6 +236,7 @@
     <% if(lc.job=='teacher') { %>
         <script>
             let appli_users = document.getElementById("appli_users");
+            let appli_teachers = document.getElementById("appli_teachers");
             function user_accept(btn) {
                 let userId = btn.dataset.idx;
                 let ai = btn.dataset.ai;
@@ -218,13 +248,46 @@
                         appli_users.removeChild(btn.parentNode.parentNode)
                         if(appli_users.children.length == 0) {
                             let stu_app = document.getElementById("stu_app");
+                            let all_acc = document.getElementById("allAccept");
                             let applicant_student = document.querySelector(".applicant_student");
                             applicant_student.removeChild(stu_app);
+                            applicant_student.removeChild(all_acc);
 
                             let nospan = document.createElement("span");
                             nospan.classList.add("no");
                             nospan.innerHTML = "신청한 사람이 없습니다.";
                             applicant_student.appendChild(nospan);
+                        }
+                    } else if(xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(data.msg);
+                    }
+                }
+                xhr.send(JSON.stringify({
+                    academy_id: ai,
+                    applicant_id: userId
+                }));
+            }
+            function teacher_accept(btn) {
+                let userId = btn.dataset.idx;
+                let ai = btn.dataset.ai;
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/academy/t_accept');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        appli_teachers.removeChild(btn.parentNode.parentNode)
+                        if(appli_teachers.children.length == 0) {
+                            let stu_app = document.getElementById("tea_app");
+                            let all_acc = document.getElementById("t_allAccept");
+                            let applicant_teachers = document.querySelector(".applicant_teachers");
+                            applicant_teachers.removeChild(stu_app);
+                            applicant_teachers.removeChild(all_acc);
+
+                            let nospan = document.createElement("span");
+                            nospan.classList.add("no");
+                            nospan.innerHTML = "신청한 사람이 없습니다.";
+                            applicant_teachers.appendChild(nospan);
                         }
                     } else if(xhr.readyState === 4) {
                         let data = JSON.parse(xhr.responseText);
@@ -247,8 +310,10 @@
                         appli_users.removeChild(btn.parentNode.parentNode);
                         if(appli_users.children.length == 0) {
                             let stu_app = document.getElementById("stu_app");
+                            let all_acc = document.getElementById("allAccept");
                             let applicant_student = document.querySelector(".applicant_student");
                             applicant_student.removeChild(stu_app);
+                            applicant_student.removeChild(all_acc);
 
                             let nospan = document.createElement("span");
                             nospan.classList.add("no");
@@ -265,7 +330,55 @@
                     applicant_id: userId
                 }));
             }
-            function accept_all() {}
+            function teacher_reject(btn) {
+                let userId = btn.dataset.idx;
+                let ai = btn.dataset.ai;
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/academy/reject');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState === 4 && xhr.status === 200) {
+                        appli_teachers.removeChild(btn.parentNode.parentNode);
+                        if(appli_teachers.children.length == 0) {
+                            let stu_app = document.getElementById("stu_app");
+                            let all_acc = document.getElementById("allAccept");
+                            let applicant_student = document.querySelector(".applicant_student");
+                            applicant_student.removeChild(stu_app);
+                            applicant_student.removeChild(all_acc);
+
+                            let nospan = document.createElement("span");
+                            nospan.classList.add("no");
+                            nospan.innerHTML = "신청한 사람이 없습니다.";
+                            applicant_student.appendChild(nospan);
+                        }
+                    } else if(xhr.readyState === 4) {
+                        let data = JSON.parse(xhr.responseText);
+                        alert(data.msg);
+                    }
+                }
+                xhr.send(JSON.stringify({
+                    academy_id: ai,
+                    applicant_id: userId
+                }));
+            }
+            function accept_all() {
+                let check = confirm('모두 승인하시겠습니까?');
+                if(check) {
+                    let btns = document.querySelectorAll(".accbtn");
+                    for(let btn of btns) {
+                        btn.click();
+                    }
+                }
+            }
+            function teacher_accept_all() {
+                let check = confirm('모두 승인하시겠습니까?');
+                if(check) {
+                    let btns = document.querySelectorAll(".teacher_accbtn");
+                    for(let btn of btns) {
+                        btn.click();
+                    }
+                }
+            }
         </script>
     <% } %>
     <script>

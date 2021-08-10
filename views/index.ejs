@@ -11,7 +11,7 @@
         integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/stylesheets/main.css">
     <% include ./header.ejs %>
-    <title>High Study</title>
+        <title>High Study</title>
 </head>
 
 <body style="text-align: center;">
@@ -38,7 +38,7 @@
             <div class="notice">
                 <img src="/images/main/notice.png">
                 <a href="" style="float: right;">더보기 >></a>
-                
+
 
                 <table>
                     <tr>
@@ -57,10 +57,14 @@
                         <td>122</td>
                     </tr>
                 </table>
-                <input type="button" value="글쓰기" onClick="location.href='/notice'">
-            </div>
+
+                <!-- 오명훈씌!! 관리자 계정에는 authority true로 설정해줘!! -->
+                <% if(authority==true) { %>  
+                    <button type="button" class="to_write_button" onClick="location.href='/notice'">글쓰기</button>
+                <% } %>
         </div>
-    <script>
-    </script>
+        <script>
+        </script>
 </body>
+
 </html>
