@@ -61,6 +61,7 @@ router
             "high-3": "고 3"
         }
         res.locals.kg = ko_grade;
+        res.locals.problems = false;
         jwt.verify(req.cookies.user, config.secret, async (err, decoded) => {
             let academy_id = req.params.academy_id;
             let [data] = await dbConnection.execute("SELECT * FROM academy WHERE id=?", [academy_id]);
@@ -127,6 +128,22 @@ router
         res.send("<script>alert('서버에 예상치 못한 에러가 발생하였습니다.');history.back();</script>");
     }
 })
+.get('/myacademy/:academy_id/makeProblem', login_required, login_check, async (req, res) => {
+    try {
+        jwt.verify(req.cookies.user, config.secret, async (err, decoded) => {
+            let [data] = await dbConnection.execute("SELECT * FROM academy WHERE id=?", [req.params.academy_id]);
+            if(data.length < 1) return res.send("<script>history.back();</script>");
+            let teachers = JSON.parse(data[0]['teachers']).teachers;
+            if(teachers.indexOf(decoded.unum) == -1) return res.send("<script>history.back();</script>");
+            res.locals.academy_name = data[0]['name'];
+            res.locals.academy_id = data[0]['id'];
+            res.render('make_problem');
+        });
+    } catch(err) {
+        console.log(err);
+        res.send("<script>alert('서버에 예상치 못한 에러가 발생하였습니다.');history.back();</script>");
+    }
+})
 .get('/myacademy', login_required, login_check, async (req, res) => {
     let token = req.cookies.user;
     res.locals.academy = false;
@@ -165,5 +182,7 @@ router
 })
 .get('/notice', login_required, login_check,(req, res) => { res.render('notice'); })
 .get('/problem', login_required, login_check,(req, res) => { res.render('problem'); })
+.get('/online', login_required, login_check,(req, res) => { res.render('online_first'); })
+.get('/createroom', login_required, login_check,(req, res) => { res.render('online_create_room'); })
 
 module.exports = router;

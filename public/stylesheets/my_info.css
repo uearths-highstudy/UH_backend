@@ -46,8 +46,9 @@ body{
 .profile .circle{
     border-radius: 100%;
     height:95%;
-    width:65%;
+    width:60%;
     margin:auto;
+    text-align: center;
     margin-top: 15%;
 }
 .profile .circle img {

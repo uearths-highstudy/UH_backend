@@ -1,0 +1,156 @@
+.main {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(241, 241, 241);
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+.main > h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+.container {
+    width: 80%;
+    position: absolute;
+    top: 30%;
+    transform: translateX(-50%);
+    left: 50%;
+}
+.pInfo {
+    background: white;
+    border-radius: 14px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 12%;
+    padding: 15px;
+}
+.pInfo > div {
+    margin-bottom: 20px;
+}
+.pInfo span {
+    margin-right: 20px;
+}
+#sdate {
+    margin-right: 30px;
+}
+#subject {
+    margin-right: 30px;
+}
+#title {
+    width: 65%;
+}
+input {
+    border: none;
+    outline: none;
+    background: rgb(245, 245, 245);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+    padding: 8px;
+    border-radius: 7px;
+}
+input:not(input[type="text"]) {
+    cursor: pointer;
+}
+.problem {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 15px;
+    width: 80%;
+    margin: 0 auto 30px;
+    padding: 15px;
+    position: relative;
+}
+.problem .top {
+    width: 80%;
+    padding: 15px;
+}
+.problem .answer {
+    width: 17%;
+    position: absolute;
+    right: 15px;
+    top: 30px;
+}
+.answer input {
+    background: rgb(228, 228, 228);
+}
+.problem .ptitle {
+    width: 70%;
+    margin-right: 30px;
+}
+.problem select {
+    border: none;
+    outline: none;
+    background: rgb(245, 245, 245);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 7px;
+}
+.problem textarea {
+    border: none;
+    outline: none;
+    background: rgb(245, 245, 245);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;padding: 8px;
+    margin-left: 50px;
+}
+.problem .see {
+    display: inline-block;
+    width: 27%;
+    padding: 8px;
+    margin-left: 50px;
+}
+.see p {
+    font-size: 13px;
+    text-align: center;
+}
+.see div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.problem .field {
+    margin-left: 100px;
+    width: 57%;
+    display: inline-block;
+}
+.field input {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.no {
+    font-size: 20px;
+    margin-right: 20px;
+}
+#addp {
+    position: absolute;
+    bottom: -100px;
+    transform: translateX(-50%);
+    left: 50%;
+    background: rgb(83, 83, 83);
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 50%;
+    padding: 10px;
+    color: white;
+    font-weight: bolder;
+    font-size: 30px;
+}
+.suc {
+    position: absolute;
+    transform: translateX(-50%);
+    bottom: -200px;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+}
+.suc input {
+    background:rgb(83, 83, 83);
+    color: white;
+    border-radius: 7px;
+    padding: 10px 17px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/mp.css">
+    <title>문제 만들기</title>
+    <% include ./header.ejs %>
+</head>
+<body>
+    <% include ./sideBar.ejs %>
+    <div class="main">
+        <h1><%= academy_name %></h1>
+        <div class="pInfo">
+            <div>
+                <input type="text" name="subject" class="subject" id="subject" placeholder="과목명">
+                <input type="text" name="title" class="title" id="title" placeholder="제목을 입력하시오.">
+            </div>
+            <span>시작일</span>
+            <input type="datetime-local" name="start_date" id="sdate" class="sdate">
+            <span>종료일</span>
+            <input type="datetime-local" name="end_date" id="edate" class="edate">
+        </div>
+        <div class="container">
+            <div id="mp">
+                <div class="problem 1">
+                    <div class="top">
+                        <span class="no">1 번</span>
+                        <input type="text" name="ptitle" class="ptitle" placeholder="문제">
+                        <select name="psubject" data-idx="1" onchange="ch_field(this);">
+                            <option value="none" selected disabled>문제유형 선택</option>
+                            <option value="multiple">객관식</option>
+                            <option value="short">주관식</option>
+                            <option value="essay">서술형</option>
+                            <option value="dynamic_essay">답이 있는 서술형</option>
+                        </select>
+                    </div>
+                    <!-- <textarea class="psee" name="psee" cols="30" rows="3" placeholder="보기 (선택)"></textarea> -->
+                    <div class="see">
+                        <p>보기 유형 (선택)</p>
+                        <input type="file" style="display: none;">
+                        <div>
+                            <input type="button" value="이미지" class="pseeimagebtn">
+                            <input type="button" value="텍스트" class="pseetextbtn">
+                        </div>
+                    </div>
+                    <!-- <textarea class="psee" name="psee" cols="48" rows="11" placeholder="보기 (선택)"></textarea> -->
+                    <div class="answer 1">
+                        <input type="text" name="panswer" class="panswer" placeholder="답 (객관식경우 숫자)">
+                    </div>
+                </div>
+            </div>
+            <i class='bx bx-plus' id="addp"></i>
+            <div class="suc">
+                <input type="button" value="문제 만들기" id="make">
+            </div>
+        </div>
+    </div>
+    <script src="/javascripts/mp.js"></script>
+</body>
+</html>

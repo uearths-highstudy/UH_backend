@@ -1,0 +1,62 @@
+body{
+    height:100vh;
+    display:flex;
+    background: rgb(241, 241, 241);;
+}
+.main-content{
+    width: 60%;
+    margin:auto;
+    height:50%;
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 30px;
+    display: flex;
+    position: relative;
+}
+.room-name{
+    width:60%;
+    height:50px;
+    text-align: center;
+    border-radius: 20px;
+    border-style: none;
+    background: #11101d;
+    color: white;
+    margin:auto;
+    font-size: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+input:focus{
+    outline: none;
+}
+.disabled{
+    width:40%;
+    border:2px solid #11101d;
+    margin:auto;
+    height:40px;
+    line-height: 40px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.room-grade{
+    width:60%;
+    height:50px;
+    text-align: center;
+    border-radius: 20px;
+    margin:auto;
+    margin-top: 30px;
+    border-style: none;
+    background: #11101d;
+    color: white;
+    font-size: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.btn{
+    margin-top: 30px;
+    width:200px;
+    height:50px;
+    margin:auto;
+    border-radius: 20px;
+    cursor: pointer;
+    border-style: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}

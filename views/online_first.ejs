@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온라인 문제풀이</title>
+    <link rel="stylesheet" href="./stylesheets/online_first.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <% include ./header.ejs %>
+</head>
+
+<body>
+    <div style="width:4%">
+        <% include ./sideBar.ejs %>
+    </div>
+    <div class="main-content">
+        <div class="left">
+            <div class="left-content">
+                <div class='a'>
+                    <a href="#ex1" rel="modal:open">
+                        <div class='makeroom'>
+                            핀코드 입력하기
+                        </div>
+                    </a>
+                    <div class="makeroom create">
+                        방 만들기
+                    </div>
+                    <div class="makeroom">
+                        빠른 입장
+                    </div>
+                </div>
+                <div class='b none'>
+                    <div class="info_of_room">
+                        <div class="problem-title">
+                        </div>
+                    </div>
+                    <div class="btns">
+                        <div class="exit">
+                            X
+                        </div>
+                        <div style="width: 10%;"></div>
+                        <div class="enter">
+                            <i class='bx bx-exit'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-content">
+                <div class="search">
+                    <input type="text" class='search-input' placeholder="방 이름 또는 주최자 이름을 검색해주세요!" onchange="search()">
+                    <div style="width:5%;"></div>
+                    <div class="btn"><i class="material-icons small">search</i></div>
+                </div>
+                <div class="rooms">
+                    <table>
+                        <thead>
+                            <th style="width:35%">방 이름</th>
+                            <th style="width:35%">주최자 / 직업</th>
+                            <th stlye="width:30%">추천 학년</th>
+                        </thead>
+                        <tbody id="problem_list">
+
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                            <tr onclick="turn_left_part(this)">
+                                <td>모두의마블</td>
+                                <td>fdsfadf</td>
+                                <td>fadsf</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ex1" class="modal">
+        <form action="/problem/pincode" method="POST">
+            <input type="text" placeholder="핀코드 입력하기"
+                style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;width:300px;height:50px;border-radius: 20px; border-style: none;background: #11101d; color:white;text-align: center;">
+            <button type="submit" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;width:100px;height:50px;border-radius: 20px; border-style: none;cursor: pointer;">확인</button>
+        </form>
+    </div>
+    <script>
+        window.onload = () => {
+            ajax('/problem/list');
+        }
+
+        function turn_left_part(a) {
+            document.querySelector('.a').classList.add('none');
+            document.querySelector('.b').classList.remove('none');
+            document.querySelector('.problem-title').innerHTML = a.children[0].innerHTML
+        }
+        document.querySelector(".exit").addEventListener('click', () => {
+            document.querySelector('.b').classList.add('none');
+            document.querySelector('.a').classList.remove('none');
+        })
+
+        document.querySelector(".create").addEventListener("click", () => {
+            window.location.href = '/createroom';
+        })
+        function search(){
+            ajax('/problem/*****', {data : document.querySelector('.search-input').value});
+        }
+        function ajax(url, data){
+            let xhr = new XMLHttpRequest()
+            xhr.open("POST", url);
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.onreadystatechange = () =>{
+                if(xhr.status === 200 && xhr.readyState === 4){
+
+                }
+            }
+            xhr.send(JSON.stringify(data))
+        }
+    </script>
+</body>
+
+</html>
