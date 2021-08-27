@@ -94,13 +94,18 @@ input:not(input[type="text"]) {
     outline: none;
     background: rgb(245, 245, 245);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;padding: 8px;
-    margin-left: 50px;
+    width:50%;
+    margin-left: 25%;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 .problem .see {
-    display: inline-block;
+    /* display: inline-block; */
     width: 27%;
     padding: 8px;
     margin-left: 50px;
+    margin:auto;
+    margin-bottom: 15px;
 }
 .see p {
     font-size: 13px;
@@ -115,7 +120,8 @@ input:not(input[type="text"]) {
 .problem .field {
     margin-left: 100px;
     width: 57%;
-    display: inline-block;
+    /* display: inline-block; */
+    margin:auto
 }
 .field input {
     width: 100%;
@@ -153,4 +159,7 @@ input:not(input[type="text"]) {
     border-radius: 7px;
     padding: 10px 17px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.none{
+    display:none
 }

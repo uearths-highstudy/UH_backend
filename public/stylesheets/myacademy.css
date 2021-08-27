@@ -397,3 +397,8 @@ input:focus {outline:none;}
     overflow-y: auto;
     position: relative;
 }
+
+tbody td{
+    height:60px;
+    border-bottom: 1px solid gray;
+}

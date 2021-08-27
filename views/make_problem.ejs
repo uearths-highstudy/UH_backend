@@ -36,16 +36,18 @@
                             <option value="dynamic_essay">답이 있는 서술형</option>
                         </select>
                     </div>
-                    <!-- <textarea class="psee" name="psee" cols="30" rows="3" placeholder="보기 (선택)"></textarea> -->
+                    <!-- 문제유형이 객관식 아닐 때 텍스트 텍스트 크기 -->
+                    <textarea class="psee none" name="psee" cols="30" rows="3" placeholder="보기 (선택)"></textarea> 
+                    <!-- 문제유형이 객관식일 때 보기 텍스트 크기 -->
+                    <textarea class="psee none" name="psee" cols="48" rows="11" placeholder="보기 (선택)"></textarea> 
                     <div class="see">
                         <p>보기 유형 (선택)</p>
                         <input type="file" style="display: none;">
                         <div>
-                            <input type="button" value="이미지" class="pseeimagebtn">
-                            <input type="button" value="텍스트" class="pseetextbtn">
+                            <input type="button" value="이미지" class="pseeimagebtn" onclick="ch_type(this)">
+                            <input type="button" value="텍스트" class="pseetextbtn" onclick="ch_type(this)">
                         </div>
                     </div>
-                    <!-- <textarea class="psee" name="psee" cols="48" rows="11" placeholder="보기 (선택)"></textarea> -->
                     <div class="answer 1">
                         <input type="text" name="panswer" class="panswer" placeholder="답 (객관식경우 숫자)">
                     </div>
