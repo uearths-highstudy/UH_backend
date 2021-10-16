@@ -32,7 +32,7 @@ router
             let pass_salt = uuid();
             let hash_pass = crypto.createHash("sha256").update(req.body.password+pass_salt, "binary").digest("hex");
             const [data_] = await dbConnection.execute("INSERT INTO users (uid, password, password_salt, age, email, name, job, academy, applied_academy, grade, token, email_verify) \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [req.body.uid, hash_pass, pass_salt, req.body.age, req.body.email, req.body.name, req.body.job, JSON.stringify({academy:[]}), JSON.stringify({academy:[]}), req.body.grade, code, 0]);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [req.body.uid, hash_pass, pass_salt, req.body.age, req.body.email, req.body.name, req.body.job, JSON.stringify({academy:[]}), JSON.stringify({academy:[]}), req.body.grade, code, 0]);
             if(data_.affectedRows !== 1) {
                 return res.status(500).json({ result: 'err', msg: '알수 없는 오류로 인해 회원등록에 실패하였습니다.\n다시시도해주시길 바랍니다.' });
             } else {
